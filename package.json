@@ -1,0 +1,39 @@
+{
+  "name": "problogapi-backend-only",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
+    "prettier:fix": "npx prettier --write src",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.26.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.8",
+    "express": "^5.1.0",
+    "mongodb": "^6.18.0",
+    "mongoose": "^8.17.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript-eslint": "^8.32.1-alpha.0"
+  }
+}
