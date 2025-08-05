@@ -6,7 +6,6 @@ import status from "http-status";
 
 const createUserIntoDB = catchAsync(async (req: Request, res: Response) => {
     const result = await UserServices.createUserIntoDB(req.body);
-
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
@@ -15,6 +14,29 @@ const createUserIntoDB = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getAllUserFromDB = catchAsync(async (req, res) => {
+    const result = await UserServices.getAllUserFromDB();
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'All user is retrieved successfully',
+        data: result,
+    });
+});
+
+const getSingleUserFromDB = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await UserServices.getSingleUserFromDB(id);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Single user is retrieved successfully',
+        data: result,
+    });
+});
+
 export const UserController = {
     createUserIntoDB,
+    getAllUserFromDB,
+    getSingleUserFromDB,
 };

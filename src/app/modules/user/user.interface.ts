@@ -13,8 +13,9 @@ export type TUser = {
     role: 'superAdmin' | 'admin' | 'user' | 'author';
     bio?: string;
     profileImage: string;
-    followers: [Types.ObjectId];
-    following: [Types.ObjectId];
+    followers: Types.ObjectId[];
+    following: Types.ObjectId[];
     isEmailVerified: boolean;
     isBanned: boolean;
+    bookmarks: Types.ObjectId[];
 };
