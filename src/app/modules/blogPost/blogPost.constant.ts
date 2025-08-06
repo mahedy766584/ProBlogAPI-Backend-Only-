@@ -1,0 +1,1 @@
+export const PostStatus = ['draft', 'published', 'rejected'];

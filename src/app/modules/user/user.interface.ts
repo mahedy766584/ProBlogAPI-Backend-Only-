@@ -1,4 +1,5 @@
-import { Types } from "mongoose";
+/* eslint-disable no-unused-vars */
+import { Model, Types } from "mongoose";
 
 export type TName = {
     firstName: string;
@@ -18,4 +19,14 @@ export type TUser = {
     isEmailVerified: boolean;
     isBanned: boolean;
     bookmarks: Types.ObjectId[];
+    isDeleted: boolean;
+    needsPasswordChange: boolean;
+};
+
+export interface UserModel extends Model<TUser> {
+    isUserByCustomUserName(userName: string): Promise<TUser>;
+    isPasswordMatch(
+        plainTextPassword: string,
+        hashedPassword: string,
+    ): Promise<boolean>;
 };

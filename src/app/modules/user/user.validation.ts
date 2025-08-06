@@ -49,6 +49,8 @@ const createUserZodSchema = z.object({
         isEmailVerified: z.boolean().optional(),
 
         isBanned: z.boolean().optional(),
+        isDeleted: z.boolean().optional(),
+        needsPasswordChange: z.boolean().optional(),
     }),
 });
 

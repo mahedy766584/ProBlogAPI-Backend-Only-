@@ -25,9 +25,9 @@ const getAllCategoriesFromDB = catchAsync(async (req, res) => {
     });
 });
 
-const getSingleUserFromDB = catchAsync(async (req, res) => {
+const getSingleCategoryFromDB = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await CategoryServices.getSingleCategory(id);
+    const result = await CategoryServices.getSingleCategoryFromDB(id);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
@@ -39,5 +39,5 @@ const getSingleUserFromDB = catchAsync(async (req, res) => {
 export const CategoryController = {
     createCategoryIntoDB,
     getAllCategoriesFromDB,
-    getSingleUserFromDB
+    getSingleCategoryFromDB
 };

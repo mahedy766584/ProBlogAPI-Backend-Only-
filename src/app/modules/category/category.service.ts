@@ -8,7 +8,7 @@ const createCategoryIntoDB = async (payload: TCategory) => {
     if (categoryExist) {
         throw new AppError(
             status.BAD_REQUEST,
-            'Category is must be unique!!'
+            'Category is already exist!!'
         );
     };
     const result = await Category.create(payload);
@@ -20,7 +20,7 @@ const getAllCategoriesFromDB = async () => {
     return result;
 };
 
-const getSingleCategory = async (id: string) => {
+const getSingleCategoryFromDB = async (id: string) => {
     const result = await Category.findById(id);
     return result;
 };
@@ -28,5 +28,5 @@ const getSingleCategory = async (id: string) => {
 export const CategoryServices = {
     createCategoryIntoDB,
     getAllCategoriesFromDB,
-    getSingleCategory,
+    getSingleCategoryFromDB,
 };

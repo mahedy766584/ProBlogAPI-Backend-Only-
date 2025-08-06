@@ -1,6 +1,8 @@
 import { model, Schema, Types } from "mongoose";
-import { TName, TUser } from "./user.interface";
+import { TName, TUser, UserModel } from "./user.interface";
 import { UserRole } from "./user.constant";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
 const nameSchema = new Schema<TName>({
     firstName: {
@@ -93,10 +95,44 @@ const userSchema = new Schema<TUser>(
             ref: 'BlogPost',
             default: [],
         },
+        isDeleted: {
+            type: Boolean,
+            default: false,
+        },
+        needsPasswordChange: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,
     }
 );
 
-export const User = model<TUser>("User", userSchema);
+userSchema.statics.isUserByCustomUserName = async function (userName: string) {
+    return await User.findOne({ userName: userName });
+};
+
+userSchema.pre('save', async function (next) {
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bcrypt_salt_rounds)
+    );
+    return next;
+});
+
+userSchema.post('save', async function (doc, next) {
+    doc.password = '';
+    next();
+});
+
+userSchema.statics.isPasswordMatch = async function (
+    plainTextPassword: string,
+    hashedPassword: string,
+) {
+    console.log(plainTextPassword, hashedPassword)
+    return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
+
+export const User = model<TUser, UserModel>("User", userSchema);

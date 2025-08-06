@@ -20,7 +20,7 @@ router.get(
 
 router.get(
     '/:id',
-    CategoryController.getSingleUserFromDB,
+    CategoryController.getSingleCategoryFromDB,
 );
 
 export const CategoryRoutes = router;
