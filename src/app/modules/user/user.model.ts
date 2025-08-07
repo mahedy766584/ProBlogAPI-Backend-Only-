@@ -1,6 +1,5 @@
 import { model, Schema, Types } from "mongoose";
 import { TName, TUser, UserModel } from "./user.interface";
-import { UserRole } from "./user.constant";
 import bcrypt from "bcrypt";
 import config from "../../config";
 
@@ -58,7 +57,7 @@ const userSchema = new Schema<TUser>(
         role: {
             type: String,
             enum: {
-                values: UserRole,
+                values: ['superAdmin', 'admin', 'user', 'author'],
                 message: "Role must be one of: superAdmin, admin, user, author",
             },
             default: "user",
@@ -101,7 +100,10 @@ const userSchema = new Schema<TUser>(
         },
         needsPasswordChange: {
             type: Boolean,
-            default: false,
+            default: true,
+        },
+        passwordChangedAt: {
+            type: Date
         },
     },
     {
@@ -110,7 +112,7 @@ const userSchema = new Schema<TUser>(
 );
 
 userSchema.statics.isUserByCustomUserName = async function (userName: string) {
-    return await User.findOne({ userName: userName });
+    return await User.findOne({ userName: userName }).select('+password');
 };
 
 userSchema.pre('save', async function (next) {
@@ -130,9 +132,25 @@ userSchema.statics.isPasswordMatch = async function (
     plainTextPassword: string,
     hashedPassword: string,
 ) {
-    console.log(plainTextPassword, hashedPassword)
     return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (passwordChangedTimestamp: Date, jwtIssuedTimestamp: number) {
+    const passwordChangedTime = Math.floor(
+        new Date(passwordChangedTimestamp).getTime() / 1000
+    );
+    // const passwordChangedTime = new Date(passwordChangedTimestamp).getTime() / 1000;
+    return passwordChangedTime > jwtIssuedTimestamp;
+};
+
+
+
+userSchema.pre('save', function (next) {
+    if (this.isModified('password')) {
+        this.passwordChangedAt = new Date();
+    }
+    next();
+});
 
 
 export const User = model<TUser, UserModel>("User", userSchema);

@@ -1,5 +1,4 @@
 import { z } from "zod/v3";
-import { UserRole } from "./user.constant";
 
 const nameSchema = z.object({
     firstName: z.string({
@@ -40,7 +39,7 @@ const createUserZodSchema = z.object({
             .min(6, "Password must be at least 6 characters")
             .max(10, "Password can't be more than 10 characters"),
 
-        role: z.enum([...UserRole as [string, ...string[]]]),
+        role: z.enum(['superAdmin', 'admin', 'user', 'author']),
 
         bio: z.string().max(160, "Bio can't be longer than 160 characters"),
 
