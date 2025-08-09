@@ -135,15 +135,15 @@ userSchema.statics.isPasswordMatch = async function (
     return await bcrypt.compare(plainTextPassword, hashedPassword);
 };
 
-userSchema.statics.isJWTIssuedBeforePasswordChanged = function (passwordChangedTimestamp: Date, jwtIssuedTimestamp: number) {
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+    passwordChangedTimestamp: Date,
+    jwtIssuedTimestamp: number
+) {
     const passwordChangedTime = Math.floor(
         new Date(passwordChangedTimestamp).getTime() / 1000
     );
-    // const passwordChangedTime = new Date(passwordChangedTimestamp).getTime() / 1000;
     return passwordChangedTime > jwtIssuedTimestamp;
 };
-
-
 
 userSchema.pre('save', function (next) {
     if (this.isModified('password')) {

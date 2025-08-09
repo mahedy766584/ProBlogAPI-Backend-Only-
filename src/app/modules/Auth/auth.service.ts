@@ -6,6 +6,7 @@ import { createToke, verifyToken } from "./auth.utils";
 import config from "../../config";
 import { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { sendEmail } from "../../utils/sendEmail";
 
 const loginUser = async (payload: TLoginUser) => {
     const user = await User.isUserByCustomUserName(
@@ -147,38 +148,83 @@ const refreshToken = async (token: string) => {
     };
 };
 
-// const forgetPassword = async (userName: string) => {
+const forgetPassword = async (userName: string) => {
+    const user = await User.isUserByCustomUserName(userName);
+    if (!user) {
+        throw new AppError(
+            status.NOT_FOUND,
+            'This user was not founded!'
+        );
+    };
+    const isDeleted = user?.isDeleted;
+    if (isDeleted) {
+        throw new AppError(
+            status.BAD_REQUEST,
+            'This user was deleted!'
+        );
+    };
+    const jwtPayload = {
+        userName: user?.userName,
+        role: user?.role,
+    };
+    const resetToken = createToke(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        '10m',
+    );
+    const resetUiLink = `${config.reset_pass_ui_link}?userName=${user.userName}&token=${resetToken}`;
+    sendEmail(user.email, resetUiLink);
+};
 
-//     const user = await User.isUserByCustomUserName(userName);
-
-//     if (!user) {
-//         throw new AppError(
-//             status.NOT_FOUND,
-//             'This user was not founded!'
-//         );
-//     };
-
-//     const isDeleted = user?.isDeleted;
-//     if (isDeleted) {
-//         throw new AppError(
-//             status.BAD_REQUEST,
-//             'This user was deleted!'
-//         );
-//     };
-
-//     // const jwtPayload = {
-//     //     userName: user?.userName,
-//     //     role: user?.role,
-//     // };
-
-//     // const resetToken = {
-
-//     // };
-
-// };
+const resetPassword = async (
+    payload: { userName: string, newPassword: string },
+    token: string
+) => {
+    const user = await User.isUserByCustomUserName(payload?.userName);
+    if (!user) {
+        throw new AppError(
+            status.NOT_FOUND,
+            'This user was not founded!'
+        );
+    };
+    const isDeleted = user?.isDeleted;
+    if (isDeleted) {
+        throw new AppError(
+            status.BAD_REQUEST,
+            'This user was deleted!'
+        );
+    };
+    const decoded = verifyToken(
+        token,
+        config.jwt_access_secret as string,
+    );
+    if (payload?.userName !== decoded.userName) {
+        throw new AppError(
+            status.FORBIDDEN,
+            'Your are forbidden!'
+        );
+    };
+    const newHashedPassword = await bcrypt.hash(
+        payload?.newPassword,
+        Number(config.bcrypt_salt_rounds),
+    );
+    await User.findOneAndUpdate(
+        {
+            userName: user?.userName,
+            role: user?.role,
+        },
+        {
+            password: newHashedPassword,
+            needsPasswordChange: false,
+            passwordChangedAt: new Date(),
+        }
+    );
+};
 
 export const AuthService = {
     loginUser,
     changePassword,
     refreshToken,
+    forgetPassword,
+    resetPassword
 };
