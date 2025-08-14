@@ -8,6 +8,7 @@ export type TName = {
 };
 
 export type TUser = {
+    _id: Types.ObjectId;
     userName: string;
     name: TName;
     email: string;
@@ -15,18 +16,20 @@ export type TUser = {
     role: 'superAdmin' | 'admin' | 'user' | 'author';
     bio?: string;
     profileImage: string;
-    followers: Types.ObjectId[];
-    following: Types.ObjectId[];
+    followers?: Types.ObjectId[];
+    following?: Types.ObjectId[];
     isEmailVerified: boolean;
     isBanned: boolean;
-    bookmarks: Types.ObjectId[];
+    bookmarks?: Types.ObjectId[];
     isDeleted: boolean;
+    tokenVersion: number;
     needsPasswordChange: boolean;
     passwordChangedAt?: Date;
 };
 
 export interface UserModel extends Model<TUser> {
     isUserByCustomUserName(userName: string): Promise<TUser>;
+    isUserByCustomId(id: string): Promise<TUser>;
     isPasswordMatch(
         plainTextPassword: string,
         hashedPassword: string,

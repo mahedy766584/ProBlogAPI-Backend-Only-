@@ -1,19 +1,49 @@
-import jwt, { Secret, SignOptions, JwtPayload } from "jsonwebtoken";
+import jwt, { SignOptions, JwtPayload } from "jsonwebtoken";
+import config from "../../config";
 
-export const createToke = (
-    jwtPayload: { userName: string, role: string },
-    secret: Secret,
-    expiresIn: string,
-): string => {
+export type AccessPayload = {
+    userId: string;
+    userName?: string;
+    role?: string;
+    tokenVersion?: number;
+};
+
+export const generateAccessToken = async (jwtPayload: AccessPayload): Promise<string> => {
+    const secret = config.jwt_access_secret as string;
+    const expiresIn = config.jwt_access_expires_in;
     const options: SignOptions = {
-        expiresIn: expiresIn as SignOptions['expiresIn'],
+        expiresIn: expiresIn as SignOptions["expiresIn"]
     };
-    return jwt.sign(jwtPayload, secret, options);
+    return Promise.resolve(jwt.sign(jwtPayload as string | object | Buffer, secret, options));
 };
 
-export const verifyToken = (token: string, secret: string) => {
-    return jwt.verify(
-        token,
-        secret,
-    ) as JwtPayload;
+export const generateRefreshToken = async (jwtPayload: { userId: string, tokenVersion?: number }): Promise<string> => {
+    const secret = config.jwt_refresh_secret as string;
+    const expiresIn = config.jwt_refresh_expires_in
+    const options: SignOptions = {
+        expiresIn: expiresIn as SignOptions["expiresIn"]
+    };
+    return Promise.resolve(jwt.sign(jwtPayload as string | object | Buffer, secret, options))
 };
+
+export const verifyAccessToken = async (token: string): Promise<JwtPayload> => {
+    const secret = config.jwt_access_secret as string;
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secret, (err, decoded) => {
+            if (err) return reject(err);
+            resolve(decoded as JwtPayload);
+        });
+    });
+};
+
+export const verifyRefreshToken = async (token: string): Promise<JwtPayload> => {
+    const secret = config.jwt_refresh_secret as string;
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secret, (err, decoded) => {
+            if (err) return reject(err);
+            resolve(decoded as JwtPayload);
+        });
+    });
+};
+
+

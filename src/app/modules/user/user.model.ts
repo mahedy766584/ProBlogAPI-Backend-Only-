@@ -98,6 +98,10 @@ const userSchema = new Schema<TUser>(
             type: Boolean,
             default: false,
         },
+        tokenVersion: {
+            type: Number,
+            default: 0,
+        },
         needsPasswordChange: {
             type: Boolean,
             default: true,
@@ -113,6 +117,10 @@ const userSchema = new Schema<TUser>(
 
 userSchema.statics.isUserByCustomUserName = async function (userName: string) {
     return await User.findOne({ userName: userName }).select('+password');
+};
+
+userSchema.statics.isUserByCustomId = async function (id: string) {
+    return await User.findOne({ id }).select('+password');
 };
 
 userSchema.pre('save', async function (next) {
@@ -144,13 +152,6 @@ userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
     );
     return passwordChangedTime > jwtIssuedTimestamp;
 };
-
-userSchema.pre('save', function (next) {
-    if (this.isModified('password')) {
-        this.passwordChangedAt = new Date();
-    }
-    next();
-});
 
 
 export const User = model<TUser, UserModel>("User", userSchema);

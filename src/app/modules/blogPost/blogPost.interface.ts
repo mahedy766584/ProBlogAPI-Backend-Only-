@@ -4,6 +4,10 @@ export type TBlogPost = {
     title: string;
     slug: string;
     content: string;
+    contentType: 'markdown' | 'html';
+    renderedHtml: string;
+    excerpt?: string;
+    readTime?: string;
     coverImage: string;
     author: Types.ObjectId;
     category: Types.ObjectId;

@@ -4,6 +4,8 @@ import { CategoryRoutes } from "../modules/category/category.routes";
 import { TagRoutes } from "../modules/tag/tag.route";
 import { BlogPostRoutes } from "../modules/blogPost/blogPost.routes";
 import { AuthRoutes } from "../modules/Auth/auth.routes";
+import { AuthorRequestRoutes } from "../modules/AuthorRequest/authorRequest.route";
+import { CommentRoutes } from "../modules/comment/comment.route";
 
 const router = Router();
 
@@ -27,6 +29,14 @@ const moduleRoutes = [
     {
         path: '/auth',
         route: AuthRoutes,
+    },
+    {
+        path: '/authors',
+        route: AuthorRequestRoutes,
+    },
+    {
+        path: '/comments',
+        route: CommentRoutes,
     },
 ];
 

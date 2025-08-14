@@ -16,5 +16,7 @@ export default {
     smtp_host_mail: process.env.SMTP_HOST_MAIL,
     smtp_pass: process.env.SMTP_PASS,
     smtp_port: process.env.SMTP_PORT,
-    smtp_host: process.env.SMTP_HOST
+    smtp_host: process.env.SMTP_HOST,
+    super_admin_email: process.env.SUPER_ADMIN_EMAIL,
+    super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
 };

@@ -6,7 +6,10 @@ const nameSchema = z.object({
     })
         .min(4, "First name must be at least 4 characters")
         .max(10, "First name can't be more than 10 characters")
-        .trim(),
+        .trim()
+        .refine((value) => /^[A-Z]/.test(value), {
+            message: 'First Name must start with a capital letter',
+        }),
 
     lastName: z.string({
         required_error: "Last name is required",
