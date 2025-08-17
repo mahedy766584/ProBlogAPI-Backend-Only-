@@ -146,10 +146,20 @@ const updateSingleBlogPostIntoDB = async (
 
 };
 
-const deleteSingleBlogPostFromDB = async (id: string) => {
+const deleteSingleBlogPostFromDB = async (
+    id: string,
+    userPayload: { userId: string, role: "superAdmin" | "admin" | "author" | "user" }
+) => {
     const isExistBlogPost = await BlogPost.findById(id);
     if (!isExistBlogPost) {
         throw new AppError(status.NOT_FOUND, 'Blog post not found!');
+    };
+
+    const isOwner = isExistBlogPost.author.toString() === userPayload.userId;
+    const isPrivileged = ["admin", "superAdmin"].includes(userPayload.role);
+
+    if (!isOwner && !isPrivileged) {
+        throw new AppError(status.FORBIDDEN, "You are not allowed to delete this blog post");
     };
 
     const result = await BlogPost.deleteOne({ _id: id });

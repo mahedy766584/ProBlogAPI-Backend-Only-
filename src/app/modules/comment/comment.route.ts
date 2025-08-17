@@ -43,4 +43,29 @@ router.get(
     CommentController.getSingleCommentFromDB,
 );
 
+router.patch(
+    '/:id',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user,
+    ),
+    validateRequest(
+        CommentValidations.updateCommentValidationSchema,
+    ),
+    CommentController.updateSingleCommentIntoDB
+);
+
+router.delete(
+    '/:id',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user,
+    ),
+    CommentController.deleteSingleCommentFromDB,
+);
+
 export const CommentRoutes = router;

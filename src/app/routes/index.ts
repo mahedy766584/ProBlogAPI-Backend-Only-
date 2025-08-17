@@ -6,6 +6,8 @@ import { BlogPostRoutes } from "../modules/blogPost/blogPost.routes";
 import { AuthRoutes } from "../modules/Auth/auth.routes";
 import { AuthorRequestRoutes } from "../modules/AuthorRequest/authorRequest.route";
 import { CommentRoutes } from "../modules/comment/comment.route";
+import { LikeRoutes } from "../modules/Like/like.route";
+import { BookmarkRoutes } from "../modules/bookmark/bookmark.route";
 
 const router = Router();
 
@@ -37,6 +39,14 @@ const moduleRoutes = [
     {
         path: '/comments',
         route: CommentRoutes,
+    },
+    {
+        path: '/likes',
+        route: LikeRoutes,
+    },
+    {
+        path: '/bookmarks',
+        route: BookmarkRoutes,
     },
 ];
 

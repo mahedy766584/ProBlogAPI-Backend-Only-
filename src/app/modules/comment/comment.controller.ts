@@ -4,7 +4,11 @@ import sendResponse from "../../utils/sendResponse";
 import { CommentService } from "./comment.service";
 
 const createCommentInPostIntoDB = catchAsync(async (req, res) => {
-    const result = await CommentService.createCommentInPostIntoDB(req.body);
+    const userPayload = {
+        userId: req.user.userId,
+        userRole: req.user.role
+    };
+    const result = await CommentService.createCommentInPostIntoDB(req.body, userPayload);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
@@ -34,8 +38,40 @@ const getSingleCommentFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const updateSingleCommentIntoDB = catchAsync(async (req, res) => {
+    const userPayload = {
+        userId: req.user.userId,
+        role: req.user.role,
+    };
+    const { id } = req.params;
+    const result = await CommentService.updateSingleCommentIntoDB(id, req.body, userPayload);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Comment is updated successfully',
+        data: result,
+    });
+});
+
+const deleteSingleCommentFromDB = catchAsync(async (req, res) => {
+    const userPayload = {
+        userId: req.user.userId,
+        role: req.user.role,
+    };
+    const { id } = req.params;
+    const result = await CommentService.deleteSingleCommentFromDB(id, userPayload);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Comment is deleted successfully',
+        data: result,
+    });
+});
+
 export const CommentController = {
     createCommentInPostIntoDB,
     getAllCommentsFromDB,
     getSingleCommentFromDB,
+    updateSingleCommentIntoDB,
+    deleteSingleCommentFromDB
 };

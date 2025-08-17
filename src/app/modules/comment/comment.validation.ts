@@ -10,13 +10,6 @@ const createCommentValidationSchema = z.object({
             })
             .regex(/^[0-9a-fA-F]{24}$/, "Post ID must be a valid MongoDB ObjectId."),
 
-        author: z
-            .string({
-                required_error: "Author ID is required.",
-                invalid_type_error: "Author ID must be a valid string.",
-            })
-            .regex(/^[0-9a-fA-F]{24}$/, "Author ID must be a valid MongoDB ObjectId."),
-
         content: z
             .string({
                 required_error: "Comment content is required.",

@@ -52,7 +52,11 @@ const updateSingleBlogPostIntoDB = catchAsync(async (req, res) => {
 
 const deleteSingleBlogPostFromDB = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await BlogPostService.deleteSingleBlogPostFromDB(id);
+    const userPayload = {
+        userId: req.user.userId,
+        role: req.user.role,
+    };
+    const result = await BlogPostService.deleteSingleBlogPostFromDB(id, userPayload);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
