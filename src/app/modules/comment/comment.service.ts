@@ -24,7 +24,7 @@ const createCommentInPostIntoDB = async (
     if (!isUserExist) {
         throw new AppError(status.NOT_FOUND, 'User is not allowed to comment.!');
     };
-    if (isUserExist.isDeleted || isUserExist.isBanned) {
+    if (isUserExist.isDeleted) {
         throw new AppError(status.NOT_FOUND, 'User is not allowed to comment. you was banned!');
     };
 
@@ -98,7 +98,7 @@ const updateSingleCommentIntoDB = async (
     if (!isUserExist) {
         throw new AppError(status.NOT_FOUND, 'User is not allowed to update this comment.!');
     };
-    if (isUserExist.isDeleted || isUserExist.isBanned) {
+    if (isUserExist.isDeleted) {
         throw new AppError(status.NOT_FOUND, 'User is not allowed to update this comment. you was banned!');
     };
 

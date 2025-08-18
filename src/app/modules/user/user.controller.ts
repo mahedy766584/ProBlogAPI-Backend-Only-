@@ -35,8 +35,20 @@ const getSingleUserFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const updateSingleUserIntoDB = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await UserServices.updateSingleUserIntoDB(id, req.body, req.user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Single user is updated successfully',
+        data: result,
+    });
+});
+
 export const UserController = {
     createUserIntoDB,
     getAllUserFromDB,
     getSingleUserFromDB,
+    updateSingleUserIntoDB,
 };

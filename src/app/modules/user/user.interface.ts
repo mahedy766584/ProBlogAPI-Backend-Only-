@@ -19,8 +19,6 @@ export type TUser = {
     followers?: Types.ObjectId[];
     following?: Types.ObjectId[];
     isEmailVerified: boolean;
-    isBanned: boolean;
-    bookmarks?: Types.ObjectId[];
     isDeleted: boolean;
     tokenVersion: number;
     needsPasswordChange: boolean;

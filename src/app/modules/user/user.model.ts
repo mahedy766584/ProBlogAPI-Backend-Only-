@@ -85,15 +85,6 @@ const userSchema = new Schema<TUser>(
             type: Boolean,
             default: false,
         },
-        isBanned: {
-            type: Boolean,
-            default: false,
-        },
-        bookmarks: {
-            type: [Types.ObjectId],
-            ref: 'BlogPost',
-            default: [],
-        },
         isDeleted: {
             type: Boolean,
             default: false,
@@ -152,6 +143,11 @@ userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
     );
     return passwordChangedTime > jwtIssuedTimestamp;
 };
+
+userSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
 
 
 export const User = model<TUser, UserModel>("User", userSchema);
