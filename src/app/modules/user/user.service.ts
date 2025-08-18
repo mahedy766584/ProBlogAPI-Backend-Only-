@@ -5,7 +5,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { customJwtPayload } from "../../interface";
 import { adminAllowedFields, isPrivilegedValue, userAllowedFields } from "./user.constant";
-import { checkEmptyOrThrow  } from "../../helpers/dbCheck";
+import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 
 const createUserIntoDB = async (payload: TUser) => {
     const exitsUser = await User.isUserByCustomUserName(payload?.userName);
@@ -21,12 +21,12 @@ const createUserIntoDB = async (payload: TUser) => {
 
 const getAllUserFromDB = async () => {
     const result = await User.find();
-    return checkEmptyOrThrow (result, 'No user found!');
+    return checkEmptyOrThrow(result, 'No user found!');
 };
 
 const getSingleUserFromDB = async (id: string) => {
     const result = await User.findById(id);
-    return checkEmptyOrThrow (result, 'No user found!');
+    return checkEmptyOrThrow(result, 'No user found!');
 };
 
 const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokePayload: customJwtPayload) => {
@@ -52,8 +52,8 @@ const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokeP
     const allowedFields = isPrivileged ? adminAllowedFields : userAllowedFields;
 
     const modifiedUpdateData: Record<string, unknown> = {};
-    for(const key of allowedFields){
-        if(key in remainingUserData){
+    for (const key of allowedFields) {
+        if (key in remainingUserData) {
             modifiedUpdateData[key] = (remainingUserData as any)[key];
         }
     };
@@ -64,8 +64,36 @@ const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokeP
         };
     };
 
-    const result = await User.findByIdAndUpdate(id, modifiedUpdateData, {new: true, runValidators: true});
+    const result = await User.findByIdAndUpdate(id, modifiedUpdateData, { new: true, runValidators: true });
     return result;
+
+};
+
+const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
+
+    const userExisting = await User.findById(id);
+    if (!userExisting) {
+        throw new AppError(status.NOT_FOUND, 'This user not found!');
+    };
+
+    const isOwner = id === tokePayload.userId;
+    const isPrivileged = isPrivilegedValue.includes(tokePayload.role);
+
+    if (!isOwner && !isPrivileged) {
+        throw new AppError(status.FORBIDDEN, "You are not allowed to update your data!");
+    };
+
+    if (userExisting.isDeleted) {
+        throw new AppError(status.FORBIDDEN, "User is already deleted!");
+    }
+
+    await User.findByIdAndUpdate(
+        id,
+        { isDeleted: true, $inc: { tokenVersion: 1 } },
+        { new: true } 
+    );
+
+    return null;
 
 };
 
@@ -73,5 +101,6 @@ export const UserServices = {
     createUserIntoDB,
     getAllUserFromDB,
     getSingleUserFromDB,
-    updateSingleUserIntoDB
+    updateSingleUserIntoDB,
+    deleteUserFromDB,
 };

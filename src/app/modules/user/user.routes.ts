@@ -39,4 +39,15 @@ router.patch(
     UserController.updateSingleUserIntoDB,
 );
 
+router.delete(
+    '/:id',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user
+    ),
+    UserController.deleteUserFromDB,
+);
+
 export const UserRoutes = router;
