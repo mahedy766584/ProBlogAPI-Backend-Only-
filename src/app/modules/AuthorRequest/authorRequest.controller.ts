@@ -4,11 +4,9 @@ import sendResponse from "../../utils/sendResponse";
 import { AuthorRequestService } from "./authorRequest.service";
 
 const createAuthorRequestIntoDB = catchAsync(async (req, res) => {
-
-    const { userId } = req.user;
     const result = await AuthorRequestService.createAuthorRequestIntoDB(
-        userId,
-        { ...req.body, user: userId }
+        req.body,
+        req.user,
     );
     sendResponse(res, {
         statusCode: status.OK,
@@ -44,15 +42,10 @@ const getSingleAuthorRequestFromDB = catchAsync(async (req, res) => {
 const updateSingleAuthorRequestIntoDB = catchAsync(async (req, res) => {
     const { id } = req.params;
     const payload = req.body;
-    const currentUser = {
-        userId: req.user.userId,
-        userName: req.user.userName,
-        role: req.user.role,
-    };
     const result = await AuthorRequestService.updateSingleAuthorRequestIntoDB(
         id,
         payload,
-        currentUser,
+        req.user
     );
 
     if (result.tokens) {

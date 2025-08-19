@@ -6,23 +6,40 @@ import { Category } from "../category/category.model";
 import { Tag } from "../tag/tag.model";
 import { BlogPost } from "./blogPost.model";
 import { User } from "../user/user.model";
-import { adminAllowedFiled, userAllowedFiled } from "./blogPost.constant";
+import { adminAllowedFiled, allowedRoles, userAllowedFiled } from "./blogPost.constant";
+import { customJwtPayload } from "../../interface";
+import { checkEmptyOrThrow } from "../../helpers/dbCheck";
+import { markdownToSanitizedHtml, sanitizeUserHtml } from "./blog.utils";
+import { TAuthorRequest } from "../AuthorRequest/authorRequest.interface";
 
-const createBlogPostIntoDB = async (payload: TBlogPost) => {
+const createBlogPostIntoDB = async (payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
 
-    const isAuthor = await AuthorRequest.findById(payload?.author);
+    const userExisting = await User.findById(tokenPayload.userId);
 
-    if (!isAuthor) {
+    if (!userExisting) {
         throw new AppError(
             status.NOT_FOUND,
             'You are not a valid author!',
         );
     };
 
-    if (isAuthor.status !== "approved") {
+    const authorExisting = await AuthorRequest.findOne({ user: tokenPayload?.userId });
+    const checkRole = allowedRoles.includes(tokenPayload.role?.toLowerCase());
+
+    if (!checkRole && !authorExisting) {
+        throw new AppError(status.FORBIDDEN, "This author not a valid!");
+    };
+
+    if (authorExisting && authorExisting.status === "pending") {
         throw new AppError(
             status.FORBIDDEN,
-            'This author not a valid!',
+            'Your author request is pending!',
+        );
+    };
+    if (authorExisting && authorExisting.status === "rejected") {
+        throw new AppError(
+            status.FORBIDDEN,
+            'Your author request is rejected!',
         );
     };
 
@@ -44,7 +61,17 @@ const createBlogPostIntoDB = async (payload: TBlogPost) => {
         );
     };
 
-    const result = await BlogPost.create(payload);
+    if (payload.content && payload.contentType) {
+        payload.renderedHtml =
+            payload.contentType === "markdown"
+                ? await markdownToSanitizedHtml(payload.content)
+                : await sanitizeUserHtml(payload.content);
+    };
+
+    const result = await BlogPost.create({
+        author: tokenPayload.userId,
+        ...payload
+    });
     return result;
 };
 
@@ -58,93 +85,187 @@ const getAllBlogPostFromDB = async () => {
         },
     })
         .populate('tags category');
-    return result;
+    return checkEmptyOrThrow(result, "Blog post not found!");
 };
 
 const getSingleBlogPostFromDB = async (id: string) => {
     const result = await BlogPost.findById(id);
-    return result;
+    return checkEmptyOrThrow(result, "Blog post not found!");
 };
+
+// const updateSingleBlogPostIntoDB = async (
+//     id: string,
+//     payload: Partial<TBlogPost>,
+//     tokenPayload: customJwtPayload
+// ) => {
+
+//     const isExistBlogPost = await BlogPost.findById(id);
+//     if (!isExistBlogPost) {
+//         throw new AppError(status.NOT_FOUND, 'Blog post not found!');
+//     };
+
+//     const existingAuthor = await AuthorRequest.findOne({ user: tokenPayload?.userId });
+
+//     if (!existingAuthor) {
+//         throw new AppError(
+//             status.NOT_FOUND,
+//             'You are not a valid author!',
+//         );
+//     };
+
+//     if (existingAuthor.status !== "approved") {
+//         throw new AppError(
+//             status.FORBIDDEN,
+//             'This author not a valid!',
+//         );
+//     };
+
+//     const userExisting = await User.findById(tokenPayload.userId);
+
+//     if (!userExisting) {
+//         throw new AppError(status.NOT_FOUND, 'Author not found!',);
+//     };
+
+//     if (tokenPayload.role !== "admin" && tokenPayload.role !== "superAdmin" && existingAuthor?.user?.toString() !== tokenPayload.userId.toString()) {
+//         throw new AppError(status.FORBIDDEN, "You are not the owner of this blog post!");
+//     };
+
+//     let allowedFields: (keyof TBlogPost)[];
+//     if (tokenPayload.role === 'admin' || tokenPayload.role === 'superAdmin') {
+//         allowedFields = adminAllowedFiled;
+//     } else if (tokenPayload.role === 'author') {
+//         allowedFields = userAllowedFiled;
+//     };
+
+//     Object.keys(payload).forEach((field) => {
+//         if (!allowedFields.includes(field as keyof TBlogPost)) {
+//             throw new AppError(status.BAD_REQUEST, `You cannot update field:${field}`);
+//         };
+//     });
+
+//     if (payload.category) {
+//         const categoryExists = await Category.findById(payload.category);
+//         if (!categoryExists) {
+//             throw new AppError(status.BAD_REQUEST, "Invalid category ID");
+//         };
+//     };
+
+//     if (payload.tags && payload.tags.length > 0) {
+//         const existsTags = await Tag.find({ _id: { $in: payload.tags } });
+//         if (existsTags.length !== payload.tags.length) {
+//             throw new AppError(status.BAD_REQUEST, "One or more tags are invalid!");
+//         };
+//         if (payload.tags.length > 5) {
+//             throw new AppError(status.BAD_REQUEST, "You cannot add more than 5 tags!");
+//         };
+//     };
+
+//     if (payload.content && payload.contentType) {
+//         payload.renderedHtml =
+//             payload.contentType === "markdown"
+//                 ? await markdownToSanitizedHtml(payload.content)
+//                 : await sanitizeUserHtml(payload.content);
+//     };
+
+//     // const result = await BlogPost.findByIdAndUpdate(
+//     //     id,
+//     //     payload,
+//     //     {
+//     //         new: true,
+//     //         runValidators: true
+//     //     }
+//     // );
+
+//     return null;
+
+// };
 
 const updateSingleBlogPostIntoDB = async (
     id: string,
     payload: Partial<TBlogPost>,
-    userPayload: { userId: string; userName: string; role: "user" | "admin" | "author" | "superAdmin" }
+    tokenPayload: customJwtPayload
 ) => {
+    // Step 1: BlogPost exist check
+    const existingBlogPost = await BlogPost.findById(id);
+    if (!existingBlogPost) {
+        throw new AppError(status.NOT_FOUND, "Blog post not found!");
+    }
 
-    const isExistBlogPost = await BlogPost.findById(id);
-    if (!isExistBlogPost) {
-        throw new AppError(status.NOT_FOUND, 'Blog post not found!');
-    };
+    // Step 2: User exist check
+    const user = await User.findById(tokenPayload.userId);
+    if (!user) {
+        throw new AppError(status.NOT_FOUND, "User not found!");
+    }
 
-    const isAuthor = await AuthorRequest.findById(payload?.author);
+    // Step 3: Role & Author verification
+    const isAdmin = ["admin", "superAdmin"].includes(tokenPayload.role);
+    let authorRequest: (TAuthorRequest & Document) | null = null;
 
-    if (!isAuthor) {
-        throw new AppError(
-            status.NOT_FOUND,
-            'You are not a valid author!',
-        );
-    };
+    if (!isAdmin) {
+        authorRequest = await AuthorRequest.findOne({ user: tokenPayload.userId });
 
-    if (isAuthor.status !== "approved") {
-        throw new AppError(
-            status.FORBIDDEN,
-            'This author not a valid!',
-        );
-    };
+        if (!authorRequest) {
+            throw new AppError(status.NOT_FOUND, "You are not a valid author!");
+        }
 
-    const isUser = await User.findById(isAuthor.user);
+        if (authorRequest.status !== "approved") {
+            throw new AppError(status.FORBIDDEN, `Your author request is ${authorRequest.status}!`);
+        }
 
-    if (!isUser) {
-        throw new AppError(status.NOT_FOUND, 'Author not found!',);
-    };
+        // Author can only update own post
+        if (existingBlogPost.author.toString() !== tokenPayload.userId.toString()) {
+            throw new AppError(status.FORBIDDEN, "You are not the owner of this blog post!");
+        }
+    }
 
-    if (userPayload.role !== "admin" && userPayload.role !== "superAdmin" && isAuthor.user._id.toString() !== userPayload.userId.toString()) {
-        throw new AppError(status.FORBIDDEN, "You are not the owner of this blog post!");
-    };
-
-    let allowedFields: (keyof TBlogPost)[];
-    if (userPayload.role === 'admin' || userPayload.role === 'superAdmin') {
-        allowedFields = adminAllowedFiled;
-    } else if (userPayload.role === 'author') {
-        allowedFields = userAllowedFiled;
-    };
+    // Step 4: Allowed fields check (Role-based)
+    const allowedFields =
+        isAdmin ? adminAllowedFiled : userAllowedFiled;
 
     Object.keys(payload).forEach((field) => {
         if (!allowedFields.includes(field as keyof TBlogPost)) {
-            throw new AppError(status.BAD_REQUEST, `You cannot update field:${field}`);
-        };
+            throw new AppError(status.BAD_REQUEST, `You cannot update field: ${field}`);
+        }
     });
 
+    // Step 5: Validate Category
     if (payload.category) {
         const categoryExists = await Category.findById(payload.category);
         if (!categoryExists) {
-            throw new AppError(status.BAD_REQUEST, "Invalid category ID");
-        };
-    };
+            throw new AppError(status.BAD_REQUEST, "Invalid category ID!");
+        }
+    }
 
+    // Step 6: Validate Tags
     if (payload.tags && payload.tags.length > 0) {
-        const existsTags = await Tag.find({ _id: { $in: payload.tags } });
-        if (existsTags.length !== payload.tags.length) {
-            throw new AppError(status.BAD_REQUEST, "One or more tags are invalid!");
-        };
         if (payload.tags.length > 5) {
             throw new AppError(status.BAD_REQUEST, "You cannot add more than 5 tags!");
-        };
-    };
-
-    const result = await BlogPost.findByIdAndUpdate(
-        id,
-        payload,
-        {
-            new: true,
-            runValidators: true
         }
-    );
 
-    return result;
+        const existingTags = await Tag.find({ _id: { $in: payload.tags } });
+        if (existingTags.length !== payload.tags.length) {
+            throw new AppError(status.BAD_REQUEST, "One or more tags are invalid!");
+        }
+    }
 
+    // Step 7: Content to HTML
+    if (payload.content && payload.contentType) {
+        payload.renderedHtml =
+            payload.contentType === "markdown"
+                ? await markdownToSanitizedHtml(payload.content)
+                : await sanitizeUserHtml(payload.content);
+    }
+
+    // Step 8: Final Update
+    const updatedBlog = await BlogPost.findByIdAndUpdate(id, payload, {
+        new: true,
+        runValidators: true,
+    });
+
+    return updatedBlog;
 };
+
+
 
 const deleteSingleBlogPostFromDB = async (
     id: string,

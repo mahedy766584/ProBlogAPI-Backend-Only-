@@ -1,7 +1,5 @@
-import mongoose, { model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TAuthorRequest } from "./authorRequest.interface";
-import AppError from "../../error/appError";
-import status from "http-status";
 
 const authorRequestSchema = new Schema<TAuthorRequest>({
     user: {
@@ -28,23 +26,7 @@ const authorRequestSchema = new Schema<TAuthorRequest>({
     timestamps: true,
 });
 
-authorRequestSchema.pre('validate', async function (next) {
-    const userId = this.user;
-    const user = await mongoose.model("User").findById(userId);
 
-    if (!user) {
-        throw new AppError(
-            status.NOT_FOUND,
-            'This user not found!'
-        );
-    };
-
-    if (user.role !== 'user') {
-        return next(new Error('Only normal users can request author role.'));
-    };
-    next();
-
-});
 
 export const AuthorRequest = model<TAuthorRequest>(
     'AuthorRequest',

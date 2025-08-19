@@ -6,6 +6,7 @@ import { User } from "./user.model";
 import { customJwtPayload } from "../../interface";
 import { adminAllowedFields, isPrivilegedValue, userAllowedFields } from "./user.constant";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
+import { BlogPost } from "../blogPost/blogPost.model";
 
 const createUserIntoDB = async (payload: TUser) => {
     const exitsUser = await User.isUserByCustomUserName(payload?.userName);
@@ -90,11 +91,36 @@ const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
     await User.findByIdAndUpdate(
         id,
         { isDeleted: true, $inc: { tokenVersion: 1 } },
-        { new: true } 
+        { new: true }
     );
 
     return null;
 
+};
+
+const getUserBlogPostFromDB = async (id: string, tokenPayload: customJwtPayload) => {
+
+    const userExisting = await User.findById(tokenPayload.userId);
+    if (!userExisting) {
+        throw new AppError(status.NOT_FOUND, 'This user not found!');
+    };
+
+    const isOwner = id === tokenPayload.userId && tokenPayload.role === 'author';
+    const isPrivileged = isPrivilegedValue.includes(tokenPayload.role);
+
+    if (!isOwner && !isPrivileged) {
+        throw new AppError(status.FORBIDDEN, "You are not allowed to get blog post!");
+    };
+
+    if (userExisting.isDeleted) {
+        throw new AppError(status.FORBIDDEN, "User is already deleted!");
+    }
+
+    const result = await BlogPost.find({
+        author: tokenPayload.userId,
+    });
+
+    return checkEmptyOrThrow(result, "Your blog post not found!");
 };
 
 export const UserServices = {
@@ -103,4 +129,5 @@ export const UserServices = {
     getSingleUserFromDB,
     updateSingleUserIntoDB,
     deleteUserFromDB,
+    getUserBlogPostFromDB,
 };

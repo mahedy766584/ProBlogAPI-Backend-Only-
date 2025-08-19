@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
 import AppError from "../../error/appError";
 import { User } from "../user/user.model";
@@ -9,17 +6,21 @@ import { AuthorRequest } from "./authorRequest.model";
 import { TUser } from "../user/user.interface";
 import mongoose from "mongoose";
 import { generateAccessToken, generateRefreshToken } from "../Auth/auth.utils";
+import { customJwtPayload } from "../../interface";
+import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 
-const createAuthorRequestIntoDB = async (userId: string, payload: TAuthorRequest) => {
+const createAuthorRequestIntoDB = async (payload: TAuthorRequest, tokenPayload: customJwtPayload) => {
 
-    const user = await User.findById(userId);
+    if (!tokenPayload.userId) {
+        throw new AppError(status.BAD_REQUEST, "User ID missing in token!");
+    }
+
+    const user = await User.findById(tokenPayload.userId);
     if (!user) {
-        throw new AppError(
-            status.BAD_REQUEST,
-            'This user not found!!'
-        );
-    };
-    if (user?.role !== 'user') {
+        throw new AppError(status.BAD_REQUEST, "This user not found!!");
+    }
+
+    if (user?.role !== tokenPayload.role) {
         throw new AppError(
             status.FORBIDDEN,
             "Only normal users can request author role!"
@@ -35,7 +36,7 @@ const createAuthorRequestIntoDB = async (userId: string, payload: TAuthorRequest
     };
 
     const isExistsRequest = await AuthorRequest.findOne({
-        user: userId,
+        user: tokenPayload?.userId,
         status: 'pending',
     });
     if (isExistsRequest) {
@@ -44,26 +45,29 @@ const createAuthorRequestIntoDB = async (userId: string, payload: TAuthorRequest
             "You already have a pending author request!"
         );
     }
-    const result = await AuthorRequest.create(payload);
+    const result = await AuthorRequest.create({
+        user: tokenPayload.userId,
+        ...payload,
+    });
     return result;
 };
 
 const getAllAuthorRequestFromDB = async () => {
     const result = await AuthorRequest.find()
         .populate('user');
-    return result;
+    return checkEmptyOrThrow(result, "Author request not found!");
 };
 
 const getSingleAuthorRequestFromDB = async (id: string) => {
     const result = await AuthorRequest.findById(id)
         .populate('user');
-    return result;
+    return checkEmptyOrThrow(result, "Author request not found!");
 };
 
 const updateSingleAuthorRequestIntoDB = async (
     id: string,
     payload: Partial<TAuthorRequest>,
-    currentUser: { userName: string; role: string; userId: string }
+    tokenPayload: customJwtPayload
 ) => {
     // 1. Find the existing request + populate user
     const authorRequest = await AuthorRequest.findById(id).populate<{ user: TUser }>(
@@ -88,8 +92,8 @@ const updateSingleAuthorRequestIntoDB = async (
     }
 
     // 4. Role-based restriction (normal user can only edit own message)
-    if (currentUser?.role === "user") {
-        if (authorRequest.user.userName !== currentUser.userName) {
+    if (tokenPayload?.role === "user") {
+        if (authorRequest.user.userName !== tokenPayload.userName) {
             throw new AppError(status.FORBIDDEN, "❎ You cannot update another user's request!");
         }
         const allowedField = ["message"];

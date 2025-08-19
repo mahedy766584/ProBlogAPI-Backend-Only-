@@ -4,7 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { BlogPostService } from "./blogPost.service";
 
 const createBlogPostIntoDB = catchAsync(async (req, res) => {
-    const result = await BlogPostService.createBlogPostIntoDB(req.body);
+    const result = await BlogPostService.createBlogPostIntoDB(req.body, req.user);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
@@ -36,12 +36,7 @@ const getSingleBlogPostFromDB = catchAsync(async (req, res) => {
 
 const updateSingleBlogPostIntoDB = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const userPayload = {
-        userId: req.user.userId,
-        userName: req.user.userName,
-        role: req.user.role,
-    };
-    const result = await BlogPostService.updateSingleBlogPostIntoDB(id, req.body, userPayload);
+    const result = await BlogPostService.updateSingleBlogPostIntoDB(id, req.body, req.user!);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
@@ -52,11 +47,7 @@ const updateSingleBlogPostIntoDB = catchAsync(async (req, res) => {
 
 const deleteSingleBlogPostFromDB = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const userPayload = {
-        userId: req.user.userId,
-        role: req.user.role,
-    };
-    const result = await BlogPostService.deleteSingleBlogPostFromDB(id, userPayload);
+    const result = await BlogPostService.deleteSingleBlogPostFromDB(id, req.user);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,

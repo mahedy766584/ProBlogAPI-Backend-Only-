@@ -27,7 +27,6 @@ const createBlogPostZodSchema = z.object({
             .url('Cover image must be a valid URL')
             .optional(),
 
-        author: objectIdSchema,
         category: objectIdSchema,
         tags: z.array(objectIdSchema).min(1, 'At least one tag is required'),
 
@@ -69,7 +68,6 @@ const updateBlogPostZodSchema = z.object({
             .url('Cover image must be a valid URL')
             .optional(),
 
-        author: objectIdSchema,
         category: objectIdSchema,
         tags: z.array(objectIdSchema).min(1, 'At least one tag is required').optional(),
 

@@ -57,10 +57,22 @@ const deleteUserFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const getUserBlogPostFromDB = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await UserServices.getUserBlogPostFromDB(id, req.user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User blog post is retrieved successfully',
+        data: result,
+    });
+});
+
 export const UserController = {
     createUserIntoDB,
     getAllUserFromDB,
     getSingleUserFromDB,
     updateSingleUserIntoDB,
     deleteUserFromDB,
+    getUserBlogPostFromDB,
 };
