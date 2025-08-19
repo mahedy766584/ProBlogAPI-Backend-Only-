@@ -42,7 +42,7 @@ const createUserValidationSchema = z.object({
             .min(6, "Password must be at least 6 characters")
             .max(10, "Password can't be more than 10 characters"),
 
-        role: z.enum(['superAdmin', 'admin', 'user', 'author']),
+        role: z.enum(['superAdmin', 'admin', 'user', 'author']).optional(),
 
         bio: z.string().max(160, "Bio can't be longer than 160 characters"),
 

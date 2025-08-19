@@ -9,9 +9,9 @@ const router = express.Router();
 
 router.post(
     '/create-user',
-    validateRequest(
-        UserValidations.createUserValidationSchema
-    ),
+    // validateRequest(
+    //     UserValidations.createUserValidationSchema
+    // ),
     UserController.createUserIntoDB,
 );
 
