@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
 import AppError from "../../error/appError";
 import { AuthorRequest } from "../AuthorRequest/authorRequest.model";
@@ -12,80 +13,110 @@ import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { markdownToSanitizedHtml, sanitizeUserHtml } from "./blog.utils";
 import { TAuthorRequest } from "../AuthorRequest/authorRequest.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
+import mongoose from "mongoose";
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 
-const createBlogPostIntoDB = async (payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
+const createBlogPostIntoDB = async (file: any, payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
 
-    const userExisting = await User.findById(tokenPayload.userId);
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    if (!userExisting) {
-        throw new AppError(
-            status.NOT_FOUND,
-            'You are not a valid author!',
-        );
+    try {
+
+        const userExisting = await User.findById(tokenPayload.userId);
+
+        if (!userExisting) {
+            throw new AppError(
+                status.NOT_FOUND,
+                'You are not a valid author!',
+            );
+        };
+
+        const authorExisting = await AuthorRequest.findOne({ user: tokenPayload?.userId });
+        const checkRole = allowedRoles.includes(tokenPayload.role?.toLowerCase());
+
+        if (!checkRole && !authorExisting) {
+            throw new AppError(status.FORBIDDEN, "This author not a valid!");
+        };
+
+        if (authorExisting && authorExisting.status === "pending") {
+            throw new AppError(
+                status.FORBIDDEN,
+                'Your author request is pending!',
+            );
+        };
+        if (authorExisting && authorExisting.status === "rejected") {
+            throw new AppError(
+                status.FORBIDDEN,
+                'Your author request is rejected!',
+            );
+        };
+
+        const isCategory = await Category.findById(payload.category);
+
+        if (!isCategory) {
+            throw new AppError(
+                status.NOT_FOUND,
+                'Blog pos category not a valid!',
+            );
+        };
+
+        const isTags = await Tag.find({ _id: { $in: payload.tags } });
+
+        if (isTags.length !== payload.tags.length) {
+            throw new AppError(
+                status.NOT_FOUND,
+                'One or more blog post tags are invalid!',
+            );
+        };
+
+        if (payload.content && payload.contentType) {
+            payload.renderedHtml =
+                payload.contentType === "markdown"
+                    ? await markdownToSanitizedHtml(payload.content)
+                    : await sanitizeUserHtml(payload.content);
+        };
+
+
+        const result = await BlogPost.create([{
+            author: tokenPayload.userId,
+            ...payload
+        }], { session });
+
+
+        let secure_url: string | undefined;
+
+        if (file) {
+            const imageName = `${tokenPayload.userName}${payload.title}`;
+            const path = file?.path;
+
+            secure_url = (await sendImageToCloudinary(imageName, path)).secure_url;
+            payload.coverImage = secure_url;
+        }
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return result[0];
+
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        throw error;
     };
 
-    const authorExisting = await AuthorRequest.findOne({ user: tokenPayload?.userId });
-    const checkRole = allowedRoles.includes(tokenPayload.role?.toLowerCase());
-
-    if (!checkRole && !authorExisting) {
-        throw new AppError(status.FORBIDDEN, "This author not a valid!");
-    };
-
-    if (authorExisting && authorExisting.status === "pending") {
-        throw new AppError(
-            status.FORBIDDEN,
-            'Your author request is pending!',
-        );
-    };
-    if (authorExisting && authorExisting.status === "rejected") {
-        throw new AppError(
-            status.FORBIDDEN,
-            'Your author request is rejected!',
-        );
-    };
-
-    const isCategory = await Category.findById(payload.category);
-
-    if (!isCategory) {
-        throw new AppError(
-            status.NOT_FOUND,
-            'Blog pos category not a valid!',
-        );
-    };
-
-    const isTags = await Tag.find({ _id: { $in: payload.tags } });
-
-    if (isTags.length !== payload.tags.length) {
-        throw new AppError(
-            status.NOT_FOUND,
-            'One or more blog post tags are invalid!',
-        );
-    };
-
-    if (payload.content && payload.contentType) {
-        payload.renderedHtml =
-            payload.contentType === "markdown"
-                ? await markdownToSanitizedHtml(payload.content)
-                : await sanitizeUserHtml(payload.content);
-    };
-
-    const result = await BlogPost.create({
-        author: tokenPayload.userId,
-        ...payload
-    });
-    return result;
 };
 
 const getAllBlogPostFromDB = async (query: Record<string, unknown>) => {
 
     const blogPostSearchQuery = new QueryBuilder(BlogPost.find()
-    .populate('author')
-    .populate('tags category')
-    , query)
-    .search(blogPostSearchableFields)
-    .filter()
-    .sort()
-    .fields();
+        .populate('author')
+        .populate('tags category')
+        , query)
+        .search(blogPostSearchableFields)
+        .filter()
+        .sort()
+        .fields();
 
     const result = await blogPostSearchQuery.modelQuery;
     const meta = await blogPostSearchQuery.countTotal();
