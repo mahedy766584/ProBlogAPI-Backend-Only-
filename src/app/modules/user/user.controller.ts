@@ -5,7 +5,7 @@ import sendResponse from "../../utils/sendResponse";
 import status from "http-status";
 
 const createUserIntoDB = catchAsync(async (req: Request, res: Response) => {
-    const result = await UserServices.createUserIntoDB(req.body);
+    const result = await UserServices.createUserIntoDB(req.file, req.body);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,

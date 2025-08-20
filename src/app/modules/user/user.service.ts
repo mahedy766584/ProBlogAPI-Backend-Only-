@@ -8,27 +8,51 @@ import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchabl
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { BlogPost } from "../blogPost/blogPost.model";
 import QueryBuilder from "../../builder/QueryBuilder";
+import mongoose from "mongoose";
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 
-const createUserIntoDB = async (payload: TUser) => {
-    const exitsUser = await User.isUserByCustomUserName(payload?.userName);
-    if (exitsUser) {
-        throw new AppError(
-            status.BAD_REQUEST,
-            'This user already exist'
-        );
+const createUserIntoDB = async (file: any, payload: TUser) => {
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+
+        const exitsUser = await User.isUserByCustomUserName(payload?.userName);
+        if (exitsUser) {
+            throw new AppError(status.BAD_REQUEST, "This user already exist");
+        };
+
+        if (file) {
+            const imageName = `${payload?.userName}`;
+            const path = file?.path;
+            const { secure_url } = await sendImageToCloudinary(imageName, path);
+            payload.profileImage = secure_url;
+        };
+
+        const result = await User.create([payload], { session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return result[0];
+
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        throw error;
     };
-    const result = await User.create(payload);
-    return result;
+
 };
 
 const getAllUserFromDB = async (query: Record<string, unknown>) => {
 
     const userQuery = new QueryBuilder(User.find(), query)
-    .search(userSearchableFields)
-    .filter()
-    .sort()
-    .paginate()
-    .fields();
+        .search(userSearchableFields)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
 
     const result = await userQuery.modelQuery;
     const meta = await userQuery.countTotal();

@@ -17,6 +17,9 @@ export default {
     smtp_pass: process.env.SMTP_PASS,
     smtp_port: process.env.SMTP_PORT,
     smtp_host: process.env.SMTP_HOST,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    cloud_api_key: process.env.CLOUDINARY_API_KEY,
+    cloud_api_secret: process.env.CLOUDINARY_API_SECRET,
     super_admin_email: process.env.SUPER_ADMIN_EMAIL,
     super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
 };
