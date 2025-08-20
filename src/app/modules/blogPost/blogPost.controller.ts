@@ -14,7 +14,7 @@ const createBlogPostIntoDB = catchAsync(async (req, res) => {
 });
 
 const getAllBlogPostFromDB = catchAsync(async (req, res) => {
-    const result = await BlogPostService.getAllBlogPostFromDB();
+    const result = await BlogPostService.getAllBlogPostFromDB(req.query);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,

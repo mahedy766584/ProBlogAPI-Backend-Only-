@@ -28,7 +28,7 @@ const createBookMarkIntoDB = async (payload: Omit<TBookMark, "user">, userId: st
         throw new AppError(status.NOT_FOUND, 'You are not a valid user!');
     };
 
-    if (userExisting.isBanned || userExisting.isDeleted) {
+    if (userExisting.isDeleted) {
         throw new AppError(status.NOT_FOUND, 'This user was banned!');
     };
 
@@ -62,7 +62,7 @@ const getForUserBookmark = async (
         throw new AppError(status.FORBIDDEN, "You are not allowed to get this blog.");
     };
 
-    if (existingUser.isBanned || existingUser.isDeleted) {
+    if (existingUser.isDeleted) {
         throw new AppError(status.NOT_FOUND, 'This user was banned!');
     };
 

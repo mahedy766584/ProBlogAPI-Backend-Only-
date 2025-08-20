@@ -44,7 +44,7 @@ const blogPostSchema = new Schema<TBlogPost>({
     author: {
         type: Schema.Types.ObjectId,
         required: [true, "Author ID is required."],
-        ref: 'AuthorRequest',
+        ref: 'User',
     },
     category: {
         type: Schema.Types.ObjectId,

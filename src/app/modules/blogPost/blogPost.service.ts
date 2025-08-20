@@ -6,11 +6,12 @@ import { Category } from "../category/category.model";
 import { Tag } from "../tag/tag.model";
 import { BlogPost } from "./blogPost.model";
 import { User } from "../user/user.model";
-import { adminAllowedFiled, allowedRoles, userAllowedFiled } from "./blogPost.constant";
+import { adminAllowedFiled, allowedRoles, blogPostSearchableFields, userAllowedFiled } from "./blogPost.constant";
 import { customJwtPayload } from "../../interface";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { markdownToSanitizedHtml, sanitizeUserHtml } from "./blog.utils";
 import { TAuthorRequest } from "../AuthorRequest/authorRequest.interface";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 const createBlogPostIntoDB = async (payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
 
@@ -75,17 +76,23 @@ const createBlogPostIntoDB = async (payload: Omit<TBlogPost, "author">, tokenPay
     return result;
 };
 
-const getAllBlogPostFromDB = async () => {
-    const result = await BlogPost.find().populate({
-        path: 'author',
-        select: '-message',
-        populate: {
-            path: 'user',
-            model: 'User'
-        },
-    })
-        .populate('tags category');
-    return checkEmptyOrThrow(result, "Blog post not found!");
+const getAllBlogPostFromDB = async (query: Record<string, unknown>) => {
+
+    const blogPostSearchQuery = new QueryBuilder(BlogPost.find()
+    .populate('author')
+    .populate('tags category')
+    , query)
+    .search(blogPostSearchableFields)
+    .filter()
+    .sort()
+    .fields();
+
+    const result = await blogPostSearchQuery.modelQuery;
+    const meta = await blogPostSearchQuery.countTotal();
+    return checkEmptyOrThrow({
+        meta,
+        result,
+    }, "Blog post not found!");
 };
 
 const getSingleBlogPostFromDB = async (id: string) => {
@@ -93,92 +100,6 @@ const getSingleBlogPostFromDB = async (id: string) => {
     return checkEmptyOrThrow(result, "Blog post not found!");
 };
 
-// const updateSingleBlogPostIntoDB = async (
-//     id: string,
-//     payload: Partial<TBlogPost>,
-//     tokenPayload: customJwtPayload
-// ) => {
-
-//     const isExistBlogPost = await BlogPost.findById(id);
-//     if (!isExistBlogPost) {
-//         throw new AppError(status.NOT_FOUND, 'Blog post not found!');
-//     };
-
-//     const existingAuthor = await AuthorRequest.findOne({ user: tokenPayload?.userId });
-
-//     if (!existingAuthor) {
-//         throw new AppError(
-//             status.NOT_FOUND,
-//             'You are not a valid author!',
-//         );
-//     };
-
-//     if (existingAuthor.status !== "approved") {
-//         throw new AppError(
-//             status.FORBIDDEN,
-//             'This author not a valid!',
-//         );
-//     };
-
-//     const userExisting = await User.findById(tokenPayload.userId);
-
-//     if (!userExisting) {
-//         throw new AppError(status.NOT_FOUND, 'Author not found!',);
-//     };
-
-//     if (tokenPayload.role !== "admin" && tokenPayload.role !== "superAdmin" && existingAuthor?.user?.toString() !== tokenPayload.userId.toString()) {
-//         throw new AppError(status.FORBIDDEN, "You are not the owner of this blog post!");
-//     };
-
-//     let allowedFields: (keyof TBlogPost)[];
-//     if (tokenPayload.role === 'admin' || tokenPayload.role === 'superAdmin') {
-//         allowedFields = adminAllowedFiled;
-//     } else if (tokenPayload.role === 'author') {
-//         allowedFields = userAllowedFiled;
-//     };
-
-//     Object.keys(payload).forEach((field) => {
-//         if (!allowedFields.includes(field as keyof TBlogPost)) {
-//             throw new AppError(status.BAD_REQUEST, `You cannot update field:${field}`);
-//         };
-//     });
-
-//     if (payload.category) {
-//         const categoryExists = await Category.findById(payload.category);
-//         if (!categoryExists) {
-//             throw new AppError(status.BAD_REQUEST, "Invalid category ID");
-//         };
-//     };
-
-//     if (payload.tags && payload.tags.length > 0) {
-//         const existsTags = await Tag.find({ _id: { $in: payload.tags } });
-//         if (existsTags.length !== payload.tags.length) {
-//             throw new AppError(status.BAD_REQUEST, "One or more tags are invalid!");
-//         };
-//         if (payload.tags.length > 5) {
-//             throw new AppError(status.BAD_REQUEST, "You cannot add more than 5 tags!");
-//         };
-//     };
-
-//     if (payload.content && payload.contentType) {
-//         payload.renderedHtml =
-//             payload.contentType === "markdown"
-//                 ? await markdownToSanitizedHtml(payload.content)
-//                 : await sanitizeUserHtml(payload.content);
-//     };
-
-//     // const result = await BlogPost.findByIdAndUpdate(
-//     //     id,
-//     //     payload,
-//     //     {
-//     //         new: true,
-//     //         runValidators: true
-//     //     }
-//     // );
-
-//     return null;
-
-// };
 
 const updateSingleBlogPostIntoDB = async (
     id: string,

@@ -20,3 +20,5 @@ export const adminAllowedFields = [
 ];
 
 export const isPrivilegedValue = ["admin", "superAdmin"];
+
+export const userSearchableFields = ['name.firstName', 'userName', 'email'];

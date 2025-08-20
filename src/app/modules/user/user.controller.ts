@@ -15,7 +15,7 @@ const createUserIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllUserFromDB = catchAsync(async (req, res) => {
-    const result = await UserServices.getAllUserFromDB();
+    const result = await UserServices.getAllUserFromDB(req.query);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,

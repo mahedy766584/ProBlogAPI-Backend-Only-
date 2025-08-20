@@ -9,3 +9,5 @@ export const adminAllowedFiled: (keyof TBlogPost)[] = [
 export const userAllowedFiled: (keyof TBlogPost)[] = ["title", "content", "contentType", "coverImage", "tags", "category", "coverImage"];
 
 export const allowedRoles = ["author", "admin", "superadmin"];
+
+export const blogPostSearchableFields = ['title', 'content'];

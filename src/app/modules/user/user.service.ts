@@ -4,9 +4,10 @@ import AppError from "../../error/appError";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { customJwtPayload } from "../../interface";
-import { adminAllowedFields, isPrivilegedValue, userAllowedFields } from "./user.constant";
+import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchableFields } from "./user.constant";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { BlogPost } from "../blogPost/blogPost.model";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 const createUserIntoDB = async (payload: TUser) => {
     const exitsUser = await User.isUserByCustomUserName(payload?.userName);
@@ -20,9 +21,21 @@ const createUserIntoDB = async (payload: TUser) => {
     return result;
 };
 
-const getAllUserFromDB = async () => {
-    const result = await User.find();
-    return checkEmptyOrThrow(result, 'No user found!');
+const getAllUserFromDB = async (query: Record<string, unknown>) => {
+
+    const userQuery = new QueryBuilder(User.find(), query)
+    .search(userSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+    const result = await userQuery.modelQuery;
+    const meta = await userQuery.countTotal();
+    return checkEmptyOrThrow({
+        meta,
+        result
+    }, 'No user found!');
 };
 
 const getSingleUserFromDB = async (id: string) => {
