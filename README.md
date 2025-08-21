@@ -138,5 +138,27 @@ REFRESH_EXPIRES_IN=30d
 npm run dev
 
 
----
+
+6. **API Endpoints Documentation** 📖  
+
+```md
+## 📌 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/auth/register` | POST | Register a new user |
+| `/api/v1/auth/login` | POST | Login user & return tokens |
+| `/api/v1/blogs` | GET | Get all blogs (with pagination, filtering, sorting) |
+| `/api/v1/blogs/:id` | GET | Get single blog by ID |
+| `/api/v1/blogs` | POST | Create a new blog (Auth required) |
+| `/api/v1/blogs/:id` | PATCH | Update blog (Owner/Admin only) |
+| `/api/v1/blogs/:id` | DELETE | Delete blog (Owner/Admin only) |
+| `/api/v1/follow/:id` | POST | Follow a user |
+| `/api/v1/follow/:id` | DELETE | Unfollow a user |
+| `/api/v1/follow/:id/followers` | GET | Get user’s followers |
+| `/api/v1/follow/:id/following` | GET | Get user’s following |
+| `/api/v1/likes/:blogId` | POST | Like/unlike a blog |
+| `/api/v1/bookmarks/:blogId` | POST | Bookmark/unBookmark a blog |
+
+```
 
