@@ -110,3 +110,33 @@ project-root/
 │── README.md
 
 ```
+
+---
+
+
+## 🚀 Installation & Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/mahedy766584/ProBlogAPI-Backend-Only-.git
+
+# 2. Navigate into the project
+cd ProBlogAPI-Backend-Only-
+
+# 3. Install dependencies
+npm install
+
+# 4. Create a .env file and configure the following
+PORT=5000
+DATABASE_URL=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+REFRESH_SECRET=your_refresh_secret
+REFRESH_EXPIRES_IN=30d
+
+# 5. Start the development server
+npm run dev
+
+
+---
+
