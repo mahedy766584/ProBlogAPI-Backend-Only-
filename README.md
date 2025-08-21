@@ -139,9 +139,6 @@ npm run dev
 
 
 
-6. **API Endpoints Documentation** 📖  
-
-```md
 ## 📌 API Endpoints
 
 | Endpoint | Method | Description |
@@ -160,5 +157,4 @@ npm run dev
 | `/api/v1/likes/:blogId` | POST | Like/unlike a blog |
 | `/api/v1/bookmarks/:blogId` | POST | Bookmark/unBookmark a blog |
 
-```
 
