@@ -145,13 +145,21 @@ npm run dev
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/v1/auth/register` | POST | Register a new user |
 | `/api/v1/auth/login` | POST | Login user & return tokens |
-| `/api/v1/blogs` | GET | Get all blogs (with pagination, filtering, sorting) |
+| `/api/v1/auth/change-password` | POST | Login user & return tokens |
+| `/api/v1/auth/refresh-token` | POST | Login user & return tokens |
+| `/api/v1/auth/forget-password` | POST | Login user & return tokens |
+| `/api/v1/auth/reset-password` | POST | Login user & return tokens |
+| `/api/v1/authors/crate-author-request` | POST | Create author request |
+| `/api/v1/authors/` | GET | Get all author request |
+| `/api/v1/authors/:id` | GET | Get single author request |
+| `/api/v1/authors/:id` | PATCH | Update single author request |
+| `/api/v1/authors/:id` | DELETE | Delete single author request |
+| `/api/v1/blogs/create-blog` | POST | Create new blog post |
+| `/api/v1/blogs/` | GET | Get all blog post |
 | `/api/v1/blogs/:id` | GET | Get single blog by ID |
-| `/api/v1/blogs` | POST | Create a new blog (Auth required) |
-| `/api/v1/blogs/:id` | PATCH | Update blog (Owner/Admin only) |
-| `/api/v1/blogs/:id` | DELETE | Delete blog (Owner/Admin only) |
+| `/api/v1/blogs/:id` | PATCH | Update single blog (Auth required) |
+| `/api/v1/blogs/:id` | DELETE | Delete |
 | `/api/v1/follow/:id` | POST | Follow a user |
 | `/api/v1/follow/:id` | DELETE | Unfollow a user |
 | `/api/v1/follow/:id/followers` | GET | Get user’s followers |
@@ -159,4 +167,15 @@ npm run dev
 | `/api/v1/likes/:blogId` | POST | Like/unlike a blog |
 | `/api/v1/bookmarks/:blogId` | POST | Bookmark/unBookmark a blog |
 
+
+---
+
+## 🤝 Contributing
+Contributions are welcome!  
+Please fork the repo and create a pull request.  
+
+
+## 👨‍💻 Author
+- [Mohammad Mehedi Hasan](https://github.com/mahedy766584)
+- LinkedIn: [your-linkedin-profile](https://linkedin.com/in/mohammad-mehedi-hasan-364b2432b)
 
