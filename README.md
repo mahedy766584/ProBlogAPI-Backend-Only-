@@ -20,3 +20,16 @@ This project is designed with a **modular architecture** and follows professiona
 - 📌 **Environment Configurations** (dotenv)
 
 ---
+
+
+## 🛠️ Tech Stack
+
+- **Node.js**
+- **Express.js**
+- **TypeScript**
+- **MongoDB + Mongoose**
+- **Zod for Validation**
+- **JWT for Authentication**
+- **ESLint + Prettier**
+
+---
