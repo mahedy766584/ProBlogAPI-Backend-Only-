@@ -1,4 +1,4 @@
-import { model, Schema, Types } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TName, TUser, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
@@ -72,14 +72,12 @@ const userSchema = new Schema<TUser>(
             default: "https://ibb.co/jkx7zn2",
         },
         followers: {
-            type: [Types.ObjectId],
-            ref: "User",
-            default: [],
+            type: Number,
+            default: 0,
         },
         following: {
-            type: [Types.ObjectId],
-            ref: "User",
-            default: [],
+            type: Number,
+            default: 0,
         },
         isEmailVerified: {
             type: Boolean,

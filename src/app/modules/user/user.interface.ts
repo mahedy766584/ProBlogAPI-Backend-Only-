@@ -16,8 +16,8 @@ export type TUser = {
     role: 'superAdmin' | 'admin' | 'user' | 'author';
     bio?: string;
     profileImage: string;
-    followers?: Types.ObjectId[];
-    following?: Types.ObjectId[];
+    followers?: number;
+    following?: number;
     isEmailVerified: boolean;
     isDeleted: boolean;
     tokenVersion: number;

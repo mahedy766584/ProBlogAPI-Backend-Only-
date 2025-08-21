@@ -8,6 +8,7 @@ import { AuthorRequestRoutes } from "../modules/AuthorRequest/authorRequest.rout
 import { CommentRoutes } from "../modules/comment/comment.route";
 import { LikeRoutes } from "../modules/Like/like.route";
 import { BookmarkRoutes } from "../modules/bookmark/bookmark.route";
+import { FollowRoutes } from "../modules/follow/follow.route";
 
 const router = Router();
 
@@ -47,6 +48,10 @@ const moduleRoutes = [
     {
         path: '/bookmarks',
         route: BookmarkRoutes,
+    },
+    {
+        path: '/follows',
+        route: FollowRoutes,
     },
 ];
 
