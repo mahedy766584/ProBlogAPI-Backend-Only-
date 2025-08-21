@@ -39,7 +39,7 @@ This project is designed with a **modular architecture** and follows professiona
 
 ## 📂 Project Structure
 
-`
+```
 project-root/
 ├── src/
 │ ├── app/
@@ -73,7 +73,7 @@ project-root/
 ├── package.json
 ├── tsconfig.json
 ├── README.md
-`
+```
 
 
 ---
