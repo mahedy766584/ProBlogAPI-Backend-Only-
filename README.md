@@ -137,7 +137,9 @@ REFRESH_EXPIRES_IN=30d
 # 5. Start the development server
 npm run dev
 
+```
 
+---
 
 ## 📌 API Endpoints
 
