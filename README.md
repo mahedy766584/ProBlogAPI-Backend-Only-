@@ -231,12 +231,12 @@ npm run dev
 ---
 
 ## 🤝 Contributing
-Contributions are welcome!  
-Please fork the repo and create a pull request.  
+Contributions, issues, and feature requests are welcome!  
+Feel free to fork the repo and submit a pull request.
 
 
 ## 👨‍💻 Author
 - [Mohammad Mehedi Hasan](https://github.com/mahedy766584)
-- LinkedIn: [your-linkedin-profile](https://linkedin.com/in/mohammad-mehedi-hasan-364b2432b)
+- LinkedIn: [[Mohammad Mehedi Hasan](https://linkedin.com/in/mohammad-mehedi-hasan-364b2432b)]
 
 
