@@ -153,29 +153,24 @@ npm run dev
 
 ## 📌 API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/v1/auth/login` | POST | Login user & return tokens |
-| `/api/v1/auth/change-password` | POST | Login user & return tokens |
-| `/api/v1/auth/refresh-token` | POST | Login user & return tokens |
-| `/api/v1/auth/forget-password` | POST | Login user & return tokens |
-| `/api/v1/auth/reset-password` | POST | Login user & return tokens |
-| `/api/v1/authors/crate-author-request` | POST | Create author request |
-| `/api/v1/authors/` | GET | Get all author request |
-| `/api/v1/authors/:id` | GET | Get single author request |
-| `/api/v1/authors/:id` | PATCH | Update single author request |
-| `/api/v1/authors/:id` | DELETE | Delete single author request |
-| `/api/v1/blogs/create-blog` | POST | Create new blog post |
-| `/api/v1/blogs/` | GET | Get all blog post |
-| `/api/v1/blogs/:id` | GET | Get single blog by ID |
-| `/api/v1/blogs/:id` | PATCH | Update single blog (Auth required) |
-| `/api/v1/blogs/:id` | DELETE | Delete |
-| `/api/v1/follow/:id` | POST | Follow a user |
-| `/api/v1/follow/:id` | DELETE | Unfollow a user |
-| `/api/v1/follow/:id/followers` | GET | Get user’s followers |
-| `/api/v1/follow/:id/following` | GET | Get user’s following |
-| `/api/v1/likes/:blogId` | POST | Like/unlike a blog |
-| `/api/v1/bookmarks/:blogId` | POST | Bookmark/unBookmark a blog |
+##🔑 Authentication APIs
+| Endpoint                       | Method   | Description                                          |
+| ------------------------------ | -------- | ---------------------------------------------------- |
+| `/api/v1/auth/login`           | **POST** | Authenticate user and return access & refresh tokens |
+| `/api/v1/auth/change-password` | **POST** | Change the password of the logged-in user            |
+| `/api/v1/auth/refresh-token`   | **POST** | Generate a new access token using a refresh token    |
+| `/api/v1/auth/forget-password` | **POST** | Send password reset link to user’s email             |
+| `/api/v1/auth/reset-password`  | **POST** | Reset password using a valid token                   |
+
+##📝 Author APIs
+
+| Endpoint                                | Method     | Description                          |
+| --------------------------------------- | ---------- | ------------------------------------ |
+| `/api/v1/authors/create-author-request` | **POST**   | Submit a request to become an author |
+| `/api/v1/authors/`                      | **GET**    | Retrieve all author requests         |
+| `/api/v1/authors/:id`                   | **GET**    | Retrieve a specific author request   |
+| `/api/v1/authors/:id`                   | **PATCH**  | Update an author request             |
+| `/api/v1/authors/:id`                   | **DELETE** | Delete an author request             |
 
 
 ---
@@ -188,4 +183,5 @@ Please fork the repo and create a pull request.
 ## 👨‍💻 Author
 - [Mohammad Mehedi Hasan](https://github.com/mahedy766584)
 - LinkedIn: [your-linkedin-profile](https://linkedin.com/in/mohammad-mehedi-hasan-364b2432b)
+
 
