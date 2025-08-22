@@ -171,6 +171,62 @@ npm run dev
 | `/api/v1/authors/:id`                   | **PATCH**  | Update an author request             |
 | `/api/v1/authors/:id`                   | **DELETE** | Delete an author request             |
 
+## 📚 Blog APIs
+| Endpoint                    | Method     | Description                        |
+| --------------------------- | ---------- | ---------------------------------- |
+| `/api/v1/blogs/create-blog` | **POST**   | Create a new blog post             |
+| `/api/v1/blogs/`            | **GET**    | Retrieve all blog posts            |
+| `/api/v1/blogs/:id`         | **GET**    | Retrieve a blog post by ID         |
+| `/api/v1/blogs/:id`         | **PATCH**  | Update a blog post (Auth required) |
+| `/api/v1/blogs/:id`         | **DELETE** | Delete a blog post                 |
+
+## 🔖 Bookmark APIs
+| Endpoint                            | Method     | Description               |
+| ----------------------------------- | ---------- | ------------------------- |
+| `/api/v1/bookmarks/create-bookmark` | **POST**   | Create a new bookmark     |
+| `/api/v1/bookmarks/`                | **GET**    | Retrieve all bookmarks    |
+| `/api/v1/bookmarks/:id`             | **GET**    | Retrieve a bookmark by ID |
+| `/api/v1/bookmarks/:id`             | **DELETE** | Remove a bookmark         |
+
+## 🏷 Category APIs
+| Endpoint                             | Method   | Description               |
+| ------------------------------------ | -------- | ------------------------- |
+| `/api/v1/categories/create-category` | **POST** | Create a new category     |
+| `/api/v1/categories/`                | **GET**  | Retrieve all categories   |
+| `/api/v1/categories/:id`             | **GET**  | Retrieve a category by ID |
+
+## 💬 Comment APIs
+| Endpoint                          | Method     | Description              |
+| --------------------------------- | ---------- | ------------------------ |
+| `/api/v1/comments/create-comment` | **POST**   | Add a new comment        |
+| `/api/v1/comments/`               | **GET**    | Retrieve all comments    |
+| `/api/v1/comments/:id`            | **GET**    | Retrieve a comment by ID |
+| `/api/v1/comments/:id`            | **PATCH**  | Update a comment by ID   |
+| `/api/v1/comments/:id`            | **DELETE** | Delete a comment by ID   |
+
+## 👍 Like APIs
+| Endpoint                    | Method   | Description                        |
+| --------------------------- | -------- | ---------------------------------- |
+| `/api/v1/likes/create-like` | **POST** | Like and unlike a blog post                   |
+| `/api/v1/likes/:blogPostId` | **GET**  | Retrieve all likes for a blog post |
+
+## 🏷 Tag APIs
+| Endpoint                  | Method   | Description          |
+| ------------------------- | -------- | -------------------- |
+| `/api/v1/tags/create-tag` | **POST** | Create a new tag     |
+| `/api/v1/tags/`           | **GET**  | Retrieve all tags    |
+| `/api/v1/tags/:id`        | **GET**  | Retrieve a tag by ID |
+
+## 👤 User APIs
+| Endpoint                    | Method     | Description                                |
+| --------------------------- | ---------- | ------------------------------------------ |
+| `/api/v1/users/create-user` | **POST**   | Register a new user                        |
+| `/api/v1/users/`            | **GET**    | Retrieve all users                         |
+| `/api/v1/users/:id`         | **GET**    | Retrieve a user by ID                      |
+| `/api/v1/users/:id`         | **PATCH**  | Update a user by ID                        |
+| `/api/v1/users/:id`         | **DELETE** | Delete a user by ID                        |
+| `/api/v1/users/:id/blog`    | **GET**    | Retrieve all blog posts by a specific user |
+
 
 ---
 
