@@ -205,10 +205,12 @@ npm run dev
 | `/api/v1/comments/:id`            | **DELETE** | Delete a comment by ID   |
 
 ## 👍 Like APIs
-| Endpoint                    | Method   | Description                        |
-| --------------------------- | -------- | ---------------------------------- |
-| `/api/v1/likes/create-like` | **POST** | Like and unlike a blog post                   |
-| `/api/v1/likes/:blogPostId` | **GET**  | Retrieve all likes for a blog post |
+
+| Endpoint                    | Method   | Description                                      |
+| --------------------------- | -------- | ------------------------------------------------ |
+| `/api/v1/likes/create-like` | **POST** | Toggle like status (like / unlike) for a blog post |
+| `/api/v1/likes/:blogPostId` | **GET**  | Retrieve all likes and total like count for a blog post |
+
 
 ## 🏷 Tag APIs
 | Endpoint                  | Method   | Description          |
