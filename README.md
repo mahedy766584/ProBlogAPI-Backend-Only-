@@ -153,7 +153,7 @@ npm run dev
 
 ## 📌 API Endpoints
 
-## 🔑 Authentication APIs
+# 🔑 Authentication APIs
 | Endpoint                       | Method   | Description                                          |
 | ------------------------------ | -------- | ---------------------------------------------------- |
 | `/api/v1/auth/login`           | **POST** | Authenticate user and return access & refresh tokens |
