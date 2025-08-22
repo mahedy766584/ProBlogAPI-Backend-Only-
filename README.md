@@ -153,7 +153,7 @@ npm run dev
 
 ## 📌 API Endpoints
 
-##🔑 Authentication APIs
+## 🔑 Authentication APIs
 | Endpoint                       | Method   | Description                                          |
 | ------------------------------ | -------- | ---------------------------------------------------- |
 | `/api/v1/auth/login`           | **POST** | Authenticate user and return access & refresh tokens |
@@ -162,8 +162,7 @@ npm run dev
 | `/api/v1/auth/forget-password` | **POST** | Send password reset link to user’s email             |
 | `/api/v1/auth/reset-password`  | **POST** | Reset password using a valid token                   |
 
-##📝 Author APIs
-
+## 📝 Author APIs
 | Endpoint                                | Method     | Description                          |
 | --------------------------------------- | ---------- | ------------------------------------ |
 | `/api/v1/authors/create-author-request` | **POST**   | Submit a request to become an author |
