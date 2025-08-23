@@ -56,14 +56,5 @@ router.delete(
     UserController.deleteUserFromDB,
 );
 
-router.get(
-    '/:id/blog-post',
-    auth(
-        USER_ROLE.superAdmin,
-        USER_ROLE.admin,
-        USER_ROLE.author,
-    ),
-    UserController.getUserBlogPostFromDB,
-);
 
 export const UserRoutes = router;
