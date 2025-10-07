@@ -7,15 +7,12 @@ import { customJwtPayload } from "../../interface";
 import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchableFields } from "./user.constant";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import QueryBuilder from "../../builder/QueryBuilder";
-import mongoose from "mongoose";
 import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
+import { withTransaction } from "../../utils/db/withTransaction";
 
 const createUserIntoDB = async (file: any, payload: TUser) => {
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
+    return withTransaction(async(session)=>{
 
         const exitsUser = await User.isUserByCustomUserName(payload?.userName);
         if (exitsUser) {
@@ -31,17 +28,8 @@ const createUserIntoDB = async (file: any, payload: TUser) => {
 
         const result = await User.create([payload], { session });
 
-        await session.commitTransaction();
-        session.endSession();
-
         return result[0];
-
-    } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
-        throw error;
-    };
-
+    });
 };
 
 const getAllUserFromDB = async (query: Record<string, unknown>) => {

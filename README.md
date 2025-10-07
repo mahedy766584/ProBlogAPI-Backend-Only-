@@ -242,3 +242,4 @@ Feel free to fork the repo and submit a pull request.
 - LinkedIn: [[Mohammad Mehedi Hasan](https://linkedin.com/in/mohammad-mehedi-hasan-364b2432b)]
 
 
+https://medium.com/@leobarri2013/setting-up-prettier-eslint-and-typescript-in-express-2025-6d59f384f00c
