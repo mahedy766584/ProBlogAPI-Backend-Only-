@@ -14,7 +14,7 @@ import { markdownToSanitizedHtml, sanitizeUserHtml } from "./blog.utils";
 import { TAuthorRequest } from "../AuthorRequest/authorRequest.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 import mongoose from "mongoose";
-import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
+import { sendImageToCloudinary } from "../../utils/file/sendImageToCloudinary";
 
 const createBlogPostIntoDB = async (file: any, payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
 

@@ -1,7 +1,7 @@
 import status from "http-status";
-import catchAsync from "../../utils/catchAsync";
+import catchAsync from "../../utils/async/catchAsync";
 import { TagService } from "./tag.service";
-import sendResponse from "../../utils/sendResponse";
+import sendResponse from "../../utils/common/sendResponse";
 
 const creteTagIntoDB = catchAsync(async (req, res) => {
     const result = await TagService.creteTagIntoDB(req.body);

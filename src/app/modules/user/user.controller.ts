@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { UserServices } from "./user.service";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
 import status from "http-status";
+import catchAsync from "../../utils/async/catchAsync";
+import sendResponse from "../../utils/common/sendResponse";
 
 const createUserIntoDB = catchAsync(async (req: Request, res: Response) => {
     const result = await UserServices.createUserIntoDB(req.file, req.body);

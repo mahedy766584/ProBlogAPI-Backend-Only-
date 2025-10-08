@@ -6,7 +6,7 @@ import { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRef
 import config from "../../config";
 import { JwtPayload } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { sendEmail } from "../../utils/sendEmail";
+import { sendEmail } from "../../utils/communication/sendEmail";
 
 const loginUser = async (payload: TLoginUser) => {
     const user = await User.isUserByCustomUserName(payload?.userName);

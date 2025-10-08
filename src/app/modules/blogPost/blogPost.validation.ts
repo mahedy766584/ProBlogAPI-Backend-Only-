@@ -1,5 +1,5 @@
 import { z } from 'zod/v3';
-import { objectIdSchema } from '../../utils/objectIdSchema';
+import { objectIdSchema } from '../../utils/validators/objectIdSchema';
 import { PostStatus } from './blogPost.constant';
 
 const createBlogPostZodSchema = z.object({

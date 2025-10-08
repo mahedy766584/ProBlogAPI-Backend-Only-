@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TTag } from "./tag.interface";
-import { generateUniqSlug } from "../../utils/globalPreHooks";
+import { generateUniqSlug } from "../../utils/common/globalPreHooks";
 
 const tagSchema = new Schema<TTag>({
     name: {

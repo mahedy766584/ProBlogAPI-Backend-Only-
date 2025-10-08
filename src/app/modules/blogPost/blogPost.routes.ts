@@ -4,7 +4,7 @@ import { BlogPostValidation } from "./blogPost.validation";
 import { BlogPostController } from "./blogPost.controller";
 import auth from "../../middlewares/auth";
 import { USER_ROLE } from "../user/user.constant";
-import { upload } from "../../utils/sendImageToCloudinary";
+import { upload } from "../../utils/file/sendImageToCloudinary";
 
 const router = Router();
 

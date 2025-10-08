@@ -2,7 +2,7 @@
 import status from "http-status";
 import AppError from "../error/appError";
 import { TUserRole } from "../modules/user/user.interface";
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../utils/async/catchAsync";
 import {
     generateAccessToken,
     verifyAccessToken,

@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 import { TCategory } from "./category.interface";
-import { generateUniqSlug } from "../../utils/globalPreHooks";
+import { generateUniqSlug } from "../../utils/common/globalPreHooks";
 
 
 const categorySchema = new Schema<TCategory>({

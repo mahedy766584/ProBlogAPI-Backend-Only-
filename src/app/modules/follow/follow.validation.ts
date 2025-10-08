@@ -1,5 +1,5 @@
 import { z } from "zod/v3";
-import { objectIdSchema } from "../../utils/objectIdSchema";
+import { objectIdSchema } from "../../utils/validators/objectIdSchema";
 
 export const followValidationSchema = z.object({
     body: z.object({

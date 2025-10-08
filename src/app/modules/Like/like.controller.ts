@@ -1,6 +1,6 @@
 import status from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/async/catchAsync";
+import sendResponse from "../../utils/common/sendResponse";
 import { LikeService } from "./like.service";
 
 const createToggleLikeIntoDB = catchAsync(async (req, res) => {

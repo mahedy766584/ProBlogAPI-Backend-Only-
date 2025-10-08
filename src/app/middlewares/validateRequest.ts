@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../utils/async/catchAsync";
 import { AnyZodObject } from "zod/v3";
 
 const validateRequest = (schema: AnyZodObject) => {

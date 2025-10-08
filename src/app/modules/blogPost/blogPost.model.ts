@@ -2,7 +2,7 @@
 import { model, Schema } from "mongoose";
 import { TBlogPost } from "./blogPost.interface";
 import { PostStatus } from "./blogPost.constant";
-import { generateUniqSlug } from "../../utils/globalPreHooks";
+import { generateUniqSlug } from "../../utils/common/globalPreHooks";
 import { calculateReadTime, makeExcerptFromMarkdownOrHtml, markdownToSanitizedHtml, sanitizeUserHtml } from "./blog.utils";
 
 const blogPostSchema = new Schema<TBlogPost>({

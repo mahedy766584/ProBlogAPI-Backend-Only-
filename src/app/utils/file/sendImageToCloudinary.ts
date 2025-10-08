@@ -1,7 +1,7 @@
 import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
-import config from '../config';
 import fs from "fs";
 import multer from 'multer';
+import config from '../../config';
 
 cloudinary.config({
     cloud_name: config.cloud_name,

@@ -1,6 +1,6 @@
 import status from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/async/catchAsync";
+import sendResponse from "../../utils/common/sendResponse";
 import { CommentService } from "./comment.service";
 
 const createCommentInPostIntoDB = catchAsync(async (req, res) => {
