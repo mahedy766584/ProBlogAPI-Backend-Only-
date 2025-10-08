@@ -9,6 +9,7 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchableFields } from "./user.constant";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { customJwtPayload } from "../../interface";
+import { verifyUserAccess } from "../../utils/guards/verifyUserAccess";
 
 const createUserIntoDB = async (file: any, payload: TUser) => {
 
@@ -58,21 +59,9 @@ const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokeP
 
     const { name, ...remainingUserData } = payload;
 
-    const userExisting = await User.findById(id);
-    if (!userExisting) {
-        throw new AppError(status.NOT_FOUND, 'This user not found!');
-    };
+    await verifyUserAccess(id, tokePayload);
 
-    const isOwner = id === tokePayload.userId;
     const isPrivileged = isPrivilegedValue.includes(tokePayload.role);
-
-    if (!isOwner && !isPrivileged) {
-        throw new AppError(status.FORBIDDEN, "You are not allowed to update your data!");
-    };
-
-    if (userExisting.isDeleted) {
-        throw new AppError(status.FORBIDDEN, "You are not authorized!");
-    };
 
     const allowedFields = isPrivileged ? adminAllowedFields : userAllowedFields;
 
@@ -96,10 +85,7 @@ const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokeP
 
 const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
 
-    const userExisting = await User.findById(id);
-    if (!userExisting) {
-        throw new AppError(status.NOT_FOUND, 'This user not found!');
-    };
+    await verifyUserAccess(id, tokePayload);
 
     const isOwner = id === tokePayload.userId;
     const isPrivileged = isPrivilegedValue.includes(tokePayload.role);
@@ -107,10 +93,6 @@ const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
     if (!isOwner && !isPrivileged) {
         throw new AppError(status.FORBIDDEN, "You are not allowed to update your data!");
     };
-
-    if (userExisting.isDeleted) {
-        throw new AppError(status.FORBIDDEN, "User is already deleted!");
-    }
 
     await User.findByIdAndUpdate(
         id,
