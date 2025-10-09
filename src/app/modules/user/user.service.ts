@@ -87,13 +87,6 @@ const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
 
     await verifyUserAccess(id, tokePayload);
 
-    const isOwner = id === tokePayload.userId;
-    const isPrivileged = isPrivilegedValue.includes(tokePayload.role);
-
-    if (!isOwner && !isPrivileged) {
-        throw new AppError(status.FORBIDDEN, "You are not allowed to update your data!");
-    };
-
     await User.findByIdAndUpdate(
         id,
         { isDeleted: true, $inc: { tokenVersion: 1 } },
