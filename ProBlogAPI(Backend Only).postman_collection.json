@@ -1,0 +1,1978 @@
+{
+	"info": {
+		"_postman_id": "36f9967a-1398-4aec-a664-ec2e143136d4",
+		"name": "ProBlogAPI(Backend Only)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32354384"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/HP/Downloads/pngegg (7).png"
+								},
+								{
+									"key": "data",
+									"value": "{\n    \"userName\": \"hasibul\",\n    \"name\": {\n        \"firstName\": \"Rakibul\",\n        \"lastName\": \"Hasan\"\n    },\n    \"email\": \"hasibul@gmail.com\",\n    \"password\": \"Rakibul\",\n    \"bio\": \"I'm a passionate developer and blogger.\",\n    \"isEmailVerified\": false,\n    \"isBanned\": false\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users/create-user",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users",
+								"create-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"mehedi123\",\r\n    \"name\": {\r\n        \"firstName\": \"Mehedi\",\r\n        \"lastName\": \"Hasan\"\r\n    },\r\n    \"email\": \"mehedi@example.com\",\r\n    \"password\": \"hashed_pa\",\r\n    \"role\": \"user\",\r\n    \"bio\": \"I'm a passionate developer and blogger.\",\r\n    \"isEmailVerified\": false,\r\n    \"isBanned\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users?limit=1&page=1&fields=name,email",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "user05@example.com",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "admin",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "-email",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "fields",
+									"value": "name,email"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"mehedi123\",\r\n    \"name\": {\r\n        \"firstName\": \"Mehedi\",\r\n        \"lastName\": \"Hasan\"\r\n    },\r\n    \"email\": \"mehedi@example.com\",\r\n    \"password\": \"hashed_pa\",\r\n    \"role\": \"user\",\r\n    \"bio\": \"I'm a passionate developer and blogger.\",\r\n    \"isEmailVerified\": false,\r\n    \"isBanned\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users/68a92dc641129a7c3ec15e03",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users",
+								"68a92dc641129a7c3ec15e03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": {\r\n        \"firstName\": \"Mehedi\",\r\n        \"lastName\": \"Updating\"\r\n    },\r\n    \"email\": \"mehedi@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users/689ab137d47f7550c86f72e2",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users",
+								"689ab137d47f7550c86f72e2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": {\r\n        \"firstName\": \"Mehedi\",\r\n        \"lastName\": \"Updating check\"\r\n    },\r\n    \"email\": \"mehedi@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users/689ab137d47f7550c86f72e2",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users",
+								"689ab137d47f7550c86f72e2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user based blog post",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request.\"\r\n}"
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/users/blog-post",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"users",
+								"blog-post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Web Programming\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/categories/create-category",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"categories",
+								"create-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Category",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Web Development\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/categories",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Category",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Web Development\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/categories/68918c4d8e62a98e5c5c6be1",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"categories",
+								"68918c4d8e62a98e5c5c6be1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag",
+			"item": [
+				{
+					"name": "Crate Tag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Web Programming\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/tags/crate-tag",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"tags",
+								"crate-tag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tag",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Home Decor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/tags/",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single tag",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Home Decor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/tags/6892a68eedb8aa9fa3295e2c",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"tags",
+								"6892a68eedb8aa9fa3295e2c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog Post",
+			"item": [
+				{
+					"name": "Create Blog Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/HP/Downloads/creative-people-working-office.jpg"
+								},
+								{
+									"key": "data",
+									"value": "{\n    \"title\": \"The Ultimate Guide to Financial Freedom  to check\",\n    \"content\": \"<h1>Financial Freedom</h1><p>Financial freedom means having enough savings and investments to live comfortably.</p><h2>1. Budget wisely</h2><p>Track your expenses and cut unnecessary costs.</p><h2>2. Build emergency funds</h2><p>Keep at least 6 months’ worth of expenses saved.</p><h2>3. Invest smartly</h2><p>Diversify your investments to reduce risks.</p>\",\n    \"contentType\": \"html\",\n    \"renderedHtml\": \"<h1>Financial Freedom</h1><p>Financial freedom means having enough savings and investments to live comfortably...</p>\",\n    \"excerpt\": \"Financial freedom means having enough savings and investments to live comfortably...\",\n    \"readTime\": \"2 min read\",\n    \"coverImage\": \"https://ibb.co/Wzj8mD4\",\n    \"category\": \"6891972e1085fba0c1afcbb9\",\n    \"tags\": [\n        \"6892a9090907f1e6b03d8645\",\n        \"6892a68eedb8aa9fa3295e2c\"\n    ],\n    \"status\": \"published\"\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/blogs/create-blog-post",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"blogs",
+								"create-blog-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all blog post",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"10 Powerful Tips to Boost Your Coding Skills\",\r\n    \"content\": \"Coding is an essential skill in the modern world. Whether you're a student, a professional, or just a tech enthusiast, there are always ways to improve your skills. In this blog post, we will explore ten powerful tips that will help you take your programming skills to the next level. From practicing regularly to collaborating with others, the tips are designed to help you grow as a developer. Let's get started! Tip 1: Practice every day. Tip 2: Read other people's code. Tip 3: Build real projects. Tip 4: Contribute to open-source. Tip 5: Participate in coding challenges. Tip 6: Learn data structures and algorithms. Tip 7: Understand system design basics. Tip 8: Focus on one language at a time. Tip 9: Learn version control. Tip 10: Stay updated with tech news.\",\r\n    \"author\": \"689ab84343702d68ca3e7508\",\r\n    \"category\": \"6892a9530907f1e6b03d8649\",\r\n    \"tags\": [\"6892a9090907f1e6b03d8645\"],\r\n    \"status\": \"published\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/blogs?searchTerm=The Ultimate Guide",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"blogs"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "The Ultimate Guide"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single blog post",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjBkZmQ0N2Y3NTUwYzg2ZjcyZDkiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJhdXRob3IiLCJpYXQiOjE3NTUwNTc4NTIsImV4cCI6MTc2MjgzMzg1Mn0.BWOu_e95nPj8sQdC2yEb5-5IeDeuUE0j_EMUJGH02Ok",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"10 Powerful Tips to Boost Your Coding Skills\",\r\n    \"content\": \"Coding is an essential skill in the modern world. Whether you're a student, a professional, or just a tech enthusiast, there are always ways to improve your skills. In this blog post, we will explore ten powerful tips that will help you take your programming skills to the next level. From practicing regularly to collaborating with others, the tips are designed to help you grow as a developer. Let's get started! Tip 1: Practice every day. Tip 2: Read other people's code. Tip 3: Build real projects. Tip 4: Contribute to open-source. Tip 5: Participate in coding challenges. Tip 6: Learn data structures and algorithms. Tip 7: Understand system design basics. Tip 8: Focus on one language at a time. Tip 9: Learn version control. Tip 10: Stay updated with tech news.\",\r\n    \"author\": \"689ab84343702d68ca3e7508\",\r\n    \"category\": \"6892a9530907f1e6b03d8649\",\r\n    \"tags\": [\"6892a9090907f1e6b03d8645\"],\r\n    \"status\": \"published\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/blogs/689c091d0285df29519e3833",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"blogs",
+								"689c091d0285df29519e3833"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blog post",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"83 Proven Strategies to Boost Your Productivity at Work\",\r\n    \"content\": \"<h1>Productivity Tips</h1><p>Productivity is the key to success in any professional environment. In this article, we will explore some practical strategies to help you make the most of your time.</p><h2>1. Plan your day ahead</h2><p>Start your day by listing your tasks and prioritizing them.</p><h2>2. Eliminate distractions</h2><p>Keep your phone on silent and avoid social media during work hours.</p><h2>3. Take regular breaks</h2><p>Short breaks improve focus and prevent burnout.</p><hr /><p>Stay consistent and track your progress regularly to boost productivity effectively.</p>\",\r\n    \"contentType\": \"html\",\r\n    \"coverImage\": \"https://ibb.co/jkx7zn2\",\r\n    \"category\": \"68918c4d8e62a98e5c5c6be1\",\r\n    \"tags\": [\r\n        \"6892a68eedb8aa9fa3295e2c\",\r\n        \"6892a9090907f1e6b03d8645\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/blogs/68a3f2a2da91f1167fa4ed77",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"blogs",
+								"68a3f2a2da91f1167fa4ed77"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blog post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"10 Proven Strategies to Boost Your Productivity at Work\",\r\n  \"content\": \"<h1>Productivity Tips</h1>\\n<p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p> <p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p><p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p>\",\r\n  \"contentType\": \"html\",\r\n  \"renderedHtml\": \"<h1>Productivity Tips</h1>\\n<p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p> <p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p><p>Productivity is the key to success in any profession. Here are some proven strategies you can use to increase your efficiency and get more done in less time...</p>\",\r\n  \"excerpt\": \"Productivity Tips — Productivity is the key to success in any profession. Here are some proven strategies you can use to work smarter, not harder...\",\r\n  \"coverImage\": \"https://ibb.co/jkx7zn2\",\r\n  \"author\": \"689ab84343702d68ca3e7508\",\r\n  \"category\": \"6892a9530907f1e6b03d8649\",\r\n  \"tags\": [\"6892a9090907f1e6b03d8645\", \"6892a68eedb8aa9fa3295e2c\"],\r\n  \"status\": \"published\",\r\n  \"isApproved\": false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/blogs/689c091d0285df29519e3833",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"blogs",
+								"689c091d0285df29519e3833"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"user04\",\r\n    \"password\": \"User04\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/login",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"admin01\",\r\n    \"password\": \"Admin01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/login",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"admin123\",\r\n    \"password\": \"Admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/login",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk5Njk5NDJjNjY4YzM1MTA4YzRjYWMiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODg2MTkzLCJleHAiOjE3NjI2NjIxOTN9.PtJy6pz_AZx4Q3hPQcPcrVPgovqG1mhtqAj5Qhja9uc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"User01C\",\r\n    \"newPassword\": \"User01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/change-password",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk5Njk5NDJjNjY4YzM1MTA4YzRjYWMiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODg2MjYxLCJleHAiOjE3NjI2NjIyNjF9.2fU5bYRM3rGqTrJRPzpr8tNqq8EuorCpOkKxsGZO0SU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/refresh-token",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk5Njk5NDJjNjY4YzM1MTA4YzRjYWMiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODg2MzQ0LCJleHAiOjE3NjI2NjIzNDR9.fbsQ4CBXamGabJrnjEs7yTkFubujkTQdwo-EWlEZ01U",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\" : \"user01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/forget-password",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk5Njk5NDJjNjY4YzM1MTA4YzRjYWMiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU0ODg2NTY3LCJleHAiOjE3NjI2NjI1Njd9.yYpuB-Gti46X4gKfuZSfwpf46ah8XCuQ-CTzrk2FYLc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\" : \"user01\",\r\n    \"newPassword\":\"User01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/reset-password",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Author Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\": \"user01\",\r\n    \"password\": \"User01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/auth/login",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Author Request",
+			"item": [
+				{
+					"name": "Create Author Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request. second time tesing from token id\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/authors/crate-author-request",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"authors",
+								"crate-author-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Author Request",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVzZXIxMjMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1NDc1MzI0MSwiZXhwIjoxNzYyNTI5MjQxfQ.o97xArW94LsYAkQNjOTLxusiwfFnNuWV21MMLFOiBgA",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/authors",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single request author",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjBkZmQ0N2Y3NTUwYzg2ZjcyZDkiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJhdXRob3IiLCJ0b2tlblZlcnNpb24iOjEsImlhdCI6MTc1NDk3MDYxMSwiZXhwIjoxNzYyNzQ2NjExfQ.xjuQYJVSdLnTkN50laW7sAz97NbBUaTa-ubeUJsDGd8",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"6896e7c496decf91124691cd\",\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/authors/689ab84343702d68ca3e7508",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"authors",
+								"689ab84343702d68ca3e7508"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author request",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request.testing second time is testing\",\r\n    \"status\": \"approved\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/authors/689ab84343702d68ca3e7508",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"authors",
+								"689ab84343702d68ca3e7508"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk4MWQ1ZjE0MzA5ZDBiNGQzZTBiZGUiLCJ1c2VyTmFtZSI6ImhhYmliMTIzIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTQ4MzkwMTQsImV4cCI6MTc2MjYxNTAxNH0.qZ10aDsxKJ8ZVUwwtCZwYmkBmOK3mTGPPLsw2U_lDnc",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\": \"I want to apply for Author please accept my request. I want to apply for Author please accept my request. I want to apply for Author please accept my request.testing second time second bar testing\",\r\n    \"status\": \"rejected\"\r\n}"
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/authors/6899316d53ac6c03843c2d65",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"authors",
+								"6899316d53ac6c03843c2d65"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\": \"689c0a580285df29519e383a\",\r\n    \"content\": \"Wow wonderful your writing, thank you somuch. so nice\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/comments/create-comment",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"comments",
+								"create-comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Comment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689d6c65939d7f183fe1e8de\",\r\n    \"author\" : \"689ab0dfd47f7550c86f72d9\",\r\n    \"content\" : \"Thank you very much for giving your beautiful blog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/comments/",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  Single Comment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689d6c65939d7f183fe1e8de\",\r\n    \"author\" : \"689ab0dfd47f7550c86f72d9\",\r\n    \"content\" : \"Thank you very much for giving your beautiful blog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/comments/689db3d3c3a0ba31ccdb4b0c",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"comments",
+								"689db3d3c3a0ba31ccdb4b0c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update single comment",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Thank you very much for giving your beautiful blog updating is testing $set is testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/comments/68a0a110e2089e7faba48800",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"comments",
+								"68a0a110e2089e7faba48800"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Thank you very much for giving your beautiful blog updating is testing $set is testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/comments/68a0a110e2089e7faba48800",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"comments",
+								"68a0a110e2089e7faba48800"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like",
+			"item": [
+				{
+					"name": "Create like",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689c0a580285df29519e383a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/likes/create-like",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"likes",
+								"create-like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get like count",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689c0a580285df29519e383a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/likes/689c0a580285df29519e383a/count",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"likes",
+								"689c0a580285df29519e383a",
+								"count"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookmark",
+			"item": [
+				{
+					"name": "Create Bookmark",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689d6c65939d7f183fe1e8de\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/bookmarks/create-bookmark",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"bookmarks",
+								"create-bookmark"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bookmark",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689c0a580285df29519e383a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/bookmarks/",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"bookmarks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get bookmarks for user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689c0a580285df29519e383a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/bookmarks/689ab137d47f7550c86f72e2/bookmark",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"bookmarks",
+								"689ab137d47f7550c86f72e2",
+								"bookmark"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get bookmarks for user Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"blogPost\" : \"689c0a580285df29519e383a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/bookmarks/68a1549dbbb4a2db225accb0",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"bookmarks",
+								"68a1549dbbb4a2db225accb0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Follow",
+			"item": [
+				{
+					"name": "Create follow user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"following\" : \"689ab137d47f7550c86f72e2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/follows/create-follow",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"follows",
+								"create-follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Followers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"following\" : \"689ab0d4d47f7550c86f72d1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/follows/followers",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"follows",
+								"followers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Following",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"following\" : \"689ab0d4d47f7550c86f72d1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/follows/following",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"follows",
+								"following"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Unfollow user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AdminToken}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AutorToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{User4Token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{UserToken}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"following\" : \"689ab0d4d47f7550c86f72d1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proBlogAPI(Backend Only)}}/follows/create-unfollow",
+							"host": [
+								"{{proBlogAPI(Backend Only)}}"
+							],
+							"path": [
+								"follows",
+								"create-unfollow"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ProBlogAPI(Backend Only)",
+			"value": "http://localhost:5000/api/v1"
+		},
+		{
+			"key": "AdminToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjE4OWQ0N2Y3NTUwYzg2ZjcyZTgiLCJ1c2VyTmFtZSI6ImFkbWluMDEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTUxNDE3MjcsImV4cCI6MTc2MjkxNzcyN30.FHCto9F42320fEngA5cJT66AEdpuG7eCcrXpGi0r_Ig"
+		},
+		{
+			"key": "AutorToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjBkZmQ0N2Y3NTUwYzg2ZjcyZDkiLCJ1c2VyTmFtZSI6InVzZXIwMSIsInJvbGUiOiJhdXRob3IiLCJ0b2tlblZlcnNpb24iOjEsImlhdCI6MTc1NDk3MDYxMSwiZXhwIjoxNzYyNzQ2NjExfQ.xjuQYJVSdLnTkN50laW7sAz97NbBUaTa-ubeUJsDGd8"
+		},
+		{
+			"key": "UserToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjEwZmQ0N2Y3NTUwYzg2ZjcyZGMiLCJ1c2VyTmFtZSI6InVzZXIwMiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MTQxNTM5LCJleHAiOjE3NjI5MTc1Mzl9.43U5hEZwY-cpMrXTLTt7ViBcWG8QjESvzAulCjcDCuY"
+		},
+		{
+			"key": "User4Token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhYjEzN2Q0N2Y3NTUwYzg2ZjcyZTIiLCJ1c2VyTmFtZSI6InVzZXIwNCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzU1MzQzOTI2LCJleHAiOjE3NjMxMTk5MjZ9.CwFHoT4U8pc1Bsd8B4nmzbx2xsSdxO5UO5Lb0ge4yqw",
+			"type": "string"
+		}
+	]
+}
