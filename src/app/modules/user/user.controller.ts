@@ -57,11 +57,36 @@ const deleteUserFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const restoreDeletedUserFromDB = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const user = req.user;
+    const result = await UserServices.restoreDeletedUserFromDB(id, user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User is restored successfully',
+        data: result,
+    });
+});
+
+const updateUserRole = catchAsync(async(req, res)=>{
+    const {id} = req.params;
+    const {role} = req.body;
+    const result = await UserServices.updateUserRole(id, role, req.user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Update user role successfully',
+        data: result,
+    });
+});
 
 export const UserController = {
     createUserIntoDB,
     getAllUserFromDB,
     getSingleUserFromDB,
     updateSingleUserIntoDB,
-    deleteUserFromDB
+    deleteUserFromDB,
+    restoreDeletedUserFromDB,
+    updateUserRole,
 };

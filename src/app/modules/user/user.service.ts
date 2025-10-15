@@ -10,14 +10,16 @@ import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchabl
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { customJwtPayload } from "../../interface";
 import { verifyUserAccess } from "../../utils/guards/verifyUserAccess";
+import { sendEmail } from "../../utils/communication/sendEmail";
+import { ErrorMessages } from "../../constant/errorMessages";
 
 const createUserIntoDB = async (file: any, payload: TUser) => {
 
-    return withTransaction(async(session)=>{
+    return withTransaction(async (session) => {
 
         const exitsUser = await User.isUserByCustomUserName(payload?.userName);
         if (exitsUser) {
-            throw new AppError(status.BAD_REQUEST, "This user already exist");
+            throw new AppError(status.BAD_REQUEST, ErrorMessages.USER.ALREADY_EXISTS);
         };
 
         if (file) {
@@ -47,12 +49,12 @@ const getAllUserFromDB = async (query: Record<string, unknown>) => {
     return checkEmptyOrThrow({
         meta,
         result
-    }, 'No user found!');
+    }, ErrorMessages.COMMON.NOT_FOUND);
 };
 
 const getSingleUserFromDB = async (id: string) => {
     const result = await User.findById(id);
-    return checkEmptyOrThrow(result, 'No user found!');
+    return checkEmptyOrThrow(result, ErrorMessages.COMMON.NOT_FOUND);
 };
 
 const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokePayload: customJwtPayload) => {
@@ -84,19 +86,53 @@ const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokeP
 };
 
 const deleteUserFromDB = async (id: string, tokePayload: customJwtPayload) => {
-
-    await verifyUserAccess(id, tokePayload);
-
+    const user = await verifyUserAccess(id, tokePayload);
+    if (user.isDeleted) {
+        throw new AppError(status.BAD_REQUEST, ErrorMessages.USER.ALREADY_DEL);
+    }
     await User.findByIdAndUpdate(
         id,
         { isDeleted: true, $inc: { tokenVersion: 1 } },
         { new: true }
     );
-
     return null;
-
 };
 
+const restoreDeletedUserFromDB = async (id: string, tokenPayload: customJwtPayload) => {
+    const user = await verifyUserAccess(id, tokenPayload);
+    if (!user.isDeleted) {
+        throw new AppError(status.BAD_REQUEST, "User is already active!");
+    };
+    if (tokenPayload.role !== 'admin' && tokenPayload.role !== 'superAdmin') {
+        throw new AppError(status.BAD_REQUEST, "Only admins can restore users!")
+    }
+    const restored = await User.findByIdAndUpdate(
+        id,
+        { isDeleted: false },
+        { new: true, runValidators: true },
+    );
+    if (restored) {
+        await sendEmail(user.email, "Your account has been restored, Welcome back!");
+    };
+    return restored;
+};
+
+const updateUserRole = async (id: string, role: string, tokenPayload: customJwtPayload) => {
+    const user = await verifyUserAccess(id, tokenPayload);
+    if (user.isDeleted) {
+        throw new AppError(status.FORBIDDEN, ErrorMessages.USER.ALREADY_DEL);
+    }
+    const isPrivileged = isPrivilegedValue.includes(tokenPayload.role);
+    if (!isPrivileged) {
+        throw new AppError(status.FORBIDDEN, ErrorMessages.USER.ROLE_UPDATE_FORBIDDEN);
+    }
+    const updateRole = await User.findByIdAndUpdate(
+        id,
+        { role: role },
+        { new: true, runValidators: true },
+    );
+    return updateRole;
+};
 
 
 export const UserServices = {
@@ -105,4 +141,6 @@ export const UserServices = {
     getSingleUserFromDB,
     updateSingleUserIntoDB,
     deleteUserFromDB,
+    restoreDeletedUserFromDB,
+    updateUserRole,
 };

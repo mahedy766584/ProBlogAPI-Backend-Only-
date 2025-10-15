@@ -49,7 +49,7 @@ const createUserValidationSchema = z.object({
         profileImage: z.string().optional(),
 
         isEmailVerified: z.boolean().optional(),
-        
+
         isDeleted: z.boolean().optional(),
         needsPasswordChange: z.boolean().optional(),
     }),
@@ -64,7 +64,7 @@ const updateUserValidationSchema = z.object({
             .trim()
             .optional(),
 
-        name: nameSchema.partial(), 
+        name: nameSchema.partial(),
 
         email: z.string().email("Invalid email address").optional(),
 
@@ -85,8 +85,17 @@ const updateUserValidationSchema = z.object({
     }),
 });
 
+const updateUserRoleSchemaValidation = z.object({
+    body: z.object({
+        role: z.enum(['superAdmin', 'admin', 'user', 'author'], {
+            message: 'Role must be one of: superAdmin, admin, user, or author.',
+        }),
+    }),
+});
+
 
 export const UserValidations = {
     createUserValidationSchema,
-    updateUserValidationSchema
+    updateUserValidationSchema,
+    updateUserRoleSchemaValidation,
 };

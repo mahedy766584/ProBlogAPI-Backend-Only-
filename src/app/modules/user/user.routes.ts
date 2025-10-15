@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(
     '/create-user',
     upload.single('file'),
-    (req: Request, res: Response, next: NextFunction) =>{
+    (req: Request, res: Response, next: NextFunction) => {
         req.body = JSON.parse(req.body.data);
         next();
     },
@@ -45,6 +45,25 @@ router.patch(
     UserController.updateSingleUserIntoDB,
 );
 
+router.patch(
+    '/:id/restore',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+    ),
+    UserController.restoreDeletedUserFromDB,
+);
+
+router.patch(
+    '/:id/update-role',
+    auth(
+        USER_ROLE.superAdmin,
+        // USER_ROLE.admin,
+    ),
+    validateRequest(UserValidations.updateUserRoleSchemaValidation),
+    UserController.updateUserRole,
+);
+
 router.delete(
     '/:id',
     auth(
@@ -55,6 +74,7 @@ router.delete(
     ),
     UserController.deleteUserFromDB,
 );
+
 
 
 export const UserRoutes = router;
