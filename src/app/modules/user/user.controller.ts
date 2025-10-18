@@ -69,14 +69,47 @@ const restoreDeletedUserFromDB = catchAsync(async (req, res) => {
     });
 });
 
-const updateUserRole = catchAsync(async(req, res)=>{
-    const {id} = req.params;
-    const {role} = req.body;
+const updateUserRole = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
     const result = await UserServices.updateUserRole(id, role, req.user!);
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Update user role successfully',
+        data: result,
+    });
+});
+
+const updateUserProfileImage = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await UserServices.updateUserProfileImage(id, req.file, req.user);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Update user profile image successfully',
+        data: result,
+    });
+});
+
+const deactivateUserAccount = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = UserServices.deactivateUserAccount(id, req.user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User is deactivated successfully',
+        data: result,
+    });
+});
+
+const activateUserAccount = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = UserServices.activateUserAccount(id, req.user!);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User is activated successfully',
         data: result,
     });
 });
@@ -89,4 +122,7 @@ export const UserController = {
     deleteUserFromDB,
     restoreDeletedUserFromDB,
     updateUserRole,
+    updateUserProfileImage,
+    deactivateUserAccount,
+    activateUserAccount,
 };

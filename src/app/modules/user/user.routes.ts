@@ -55,10 +55,39 @@ router.patch(
 );
 
 router.patch(
+    '/:id/update-profile-image',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user
+    ),
+    upload.single('file'),
+    UserController.updateUserProfileImage,
+);
+
+router.patch(
+    '/:id/deactivate',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+    ),
+    UserController.deactivateUserAccount,
+);
+
+router.patch(
+    '/:id/activated',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+    ),
+    UserController.activateUserAccount,
+);
+
+router.patch(
     '/:id/update-role',
     auth(
         USER_ROLE.superAdmin,
-        // USER_ROLE.admin,
     ),
     validateRequest(UserValidations.updateUserRoleSchemaValidation),
     UserController.updateUserRole,

@@ -20,6 +20,7 @@ export type TUser = {
     following?: number;
     isEmailVerified: boolean;
     isDeleted: boolean;
+    isActive: boolean;
     tokenVersion: number;
     needsPasswordChange: boolean;
     passwordChangedAt?: Date;

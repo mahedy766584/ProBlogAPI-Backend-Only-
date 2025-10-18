@@ -87,6 +87,10 @@ const userSchema = new Schema<TUser>(
             type: Boolean,
             default: false,
         },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
         tokenVersion: {
             type: Number,
             default: 0,

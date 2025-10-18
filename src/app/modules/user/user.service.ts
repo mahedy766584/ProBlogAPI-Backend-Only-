@@ -134,6 +134,52 @@ const updateUserRole = async (id: string, role: string, tokenPayload: customJwtP
     return updateRole;
 };
 
+const updateUserProfileImage = async (id: string, file: any, tokenPayload: customJwtPayload) => {
+    const user = await verifyUserAccess(id, tokenPayload);
+    if (!file) {
+        throw new AppError(status.NOT_FOUND, "No image provided!")
+    }
+    const imageName = `${user.userName}`;
+    const path = file?.path;
+    const { secure_url } = await sendImageToCloudinary(imageName, path);
+    const updated = await User.findByIdAndUpdate(id,
+        { profileImage: secure_url },
+        { new: true, runValidators: true },
+    );
+    return updated;
+};
+
+const deactivateUserAccount = async (id: string, tokenPayload: customJwtPayload) => {
+    const isPrivileged = isPrivilegedValue.includes(tokenPayload.role);
+    if (isPrivileged) {
+        throw new AppError(status.FORBIDDEN, "Only admin can active accounts!");
+    }
+    const user = await verifyUserAccess(id, tokenPayload);
+    if(!user.isActive){
+        throw new AppError(status.BAD_REQUEST, "User already deactivate!");
+    }
+    const updated = await User.findByIdAndUpdate(id,
+        { isActive: false },
+        { new: true }
+    );
+    return updated;
+};
+
+const activateUserAccount = async (id: string, tokenPayload: customJwtPayload) => {
+    const isPrivileged = isPrivilegedValue.includes(tokenPayload.role);
+    if (!isPrivileged) {
+        throw new AppError(status.FORBIDDEN, "Only admin can deactivate accounts!");
+    }
+    const user = await verifyUserAccess(id, tokenPayload);
+    if(user.isActive){
+        throw new AppError(status.BAD_REQUEST, "User already active!");
+    }
+    const updated = await User.findByIdAndUpdate(id,
+        { isActive: true },
+        { new: true }
+    );
+    return updated;
+};
 
 export const UserServices = {
     createUserIntoDB,
@@ -143,4 +189,7 @@ export const UserServices = {
     deleteUserFromDB,
     restoreDeletedUserFromDB,
     updateUserRole,
+    updateUserProfileImage,
+    deactivateUserAccount,
+    activateUserAccount,
 };
