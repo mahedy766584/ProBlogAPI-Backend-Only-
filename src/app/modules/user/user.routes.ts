@@ -27,6 +27,17 @@ router.get(
 );
 
 router.get(
+    '/authors',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user
+    ),
+    UserController.getUserRoleAuthor,
+);
+
+router.get(
     '/:id',
     UserController.getSingleUserFromDB,
 );

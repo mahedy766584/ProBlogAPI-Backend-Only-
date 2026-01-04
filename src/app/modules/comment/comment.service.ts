@@ -4,6 +4,7 @@ import { BlogPost } from "../blogPost/blogPost.model";
 import { TComment } from "./comment.interface";
 import { User } from "../user/user.model";
 import { Comment } from "./comment.model";
+import { markdownToSanitizedHtml, sanitizeUserHtml } from "../blogPost/blog.utils";
 
 const createCommentInPostIntoDB = async (
     payload: Omit<TComment, "author">,
@@ -46,11 +47,19 @@ const createCommentInPostIntoDB = async (
         }
     }
 
-    // 5. Create comment (author always from token)
+    // 5. markdown or html
+    if (payload.content && payload.contentType) {
+        payload.renderedHtml = payload.contentType === 'markdown' ?
+            await markdownToSanitizedHtml(payload.content)
+            :
+            await sanitizeUserHtml(payload.content);
+    }
+
+    // 6. Create comment (author always from token)
 
     const result = await Comment.create({
         ...payload,
-        author: userPayload.userId
+        user: userPayload.userId
     });
 
     return result;
@@ -58,7 +67,7 @@ const createCommentInPostIntoDB = async (
 };
 
 const getAllCommentsFromDB = async () => {
-    const result = await Comment.find().populate('blogPost author parent');
+    const result = await Comment.find().populate('blogPost parent');
     if (!result) {
         throw new AppError(status.NOT_FOUND, 'Any comment not found!')
     };
@@ -66,7 +75,15 @@ const getAllCommentsFromDB = async () => {
 };
 
 const getSingleCommentFromDB = async (id: string) => {
-    const result = await Comment.findById(id).populate('blogPost author parent');
+    const result = await Comment.findById(id).populate('blogPost  parent');
+    if (!result) {
+        throw new AppError(status.NOT_FOUND, 'Any comment not found!')
+    };
+    return result;
+};
+
+const getCommentForBlogPost = async (blogPostId: string) => {
+    const result = await Comment.find({ blogPost: blogPostId }).populate('user parent blogPost');
     if (!result) {
         throw new AppError(status.NOT_FOUND, 'Any comment not found!')
     };
@@ -86,7 +103,7 @@ const updateSingleCommentIntoDB = async (
     };
 
     //2. Role and ownership check
-    const isOwner = existingComment.author.toString() === userPayload.userId;
+    const isOwner = existingComment.user.toString() === userPayload.userId;
     const isPrivileged = ["admin", "superAdmin"].includes(userPayload.role);
 
     if (!isOwner && !isPrivileged) {
@@ -103,7 +120,7 @@ const updateSingleCommentIntoDB = async (
     };
 
     // 4. Restrict immutable fields
-    const immutableFields: (keyof TComment)[] = ["author", "blogPost"];
+    const immutableFields: (keyof TComment)[] = ["user", "blogPost"];
     immutableFields.forEach((field) => {
         if (payload[field] !== undefined) {
             throw new AppError(status.BAD_REQUEST, `Field ${field} cannot be updated.`);
@@ -141,7 +158,7 @@ const deleteSingleCommentFromDB = async (
         throw new AppError(status.NOT_FOUND, 'Comment was not found!');
     };
 
-    const isOwner = commentExisting.author.toString() === userPayload.userId;
+    const isOwner = commentExisting.user.toString() === userPayload.userId;
     const isPrivileged = ["admin", "superAdmin"].includes(userPayload.role);
 
     if (!isOwner && !isPrivileged) {
@@ -157,6 +174,7 @@ export const CommentService = {
     createCommentInPostIntoDB,
     getAllCommentsFromDB,
     getSingleCommentFromDB,
+    getCommentForBlogPost,
     updateSingleCommentIntoDB,
     deleteSingleCommentFromDB,
 };

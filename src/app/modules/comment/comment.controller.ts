@@ -38,6 +38,17 @@ const getSingleCommentFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const getCommentForBlogPost = catchAsync(async (req, res) => {
+    const { blogPostId } = req.params;
+    const result = await CommentService.getCommentForBlogPost(blogPostId);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Comment is retrieved successfully for blog post',
+        data: result,
+    });
+});
+
 const updateSingleCommentIntoDB = catchAsync(async (req, res) => {
     const userPayload = {
         userId: req.user.userId,
@@ -72,6 +83,7 @@ export const CommentController = {
     createCommentInPostIntoDB,
     getAllCommentsFromDB,
     getSingleCommentFromDB,
+    getCommentForBlogPost,
     updateSingleCommentIntoDB,
-    deleteSingleCommentFromDB
+    deleteSingleCommentFromDB,
 };

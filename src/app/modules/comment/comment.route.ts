@@ -43,6 +43,17 @@ router.get(
     CommentController.getSingleCommentFromDB,
 );
 
+router.get(
+    '/:blogPostId/comment',
+    auth(
+        USER_ROLE.superAdmin,
+        USER_ROLE.admin,
+        USER_ROLE.author,
+        USER_ROLE.user,
+    ),
+    CommentController.getCommentForBlogPost,
+);
+
 router.patch(
     '/:id',
     auth(

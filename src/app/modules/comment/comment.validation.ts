@@ -18,6 +18,8 @@ const createCommentValidationSchema = z.object({
             .min(2, "Comment must be at least 2 characters long.")
             .max(500, "Comment cannot exceed 500 characters."),
 
+        contentType: z.enum(['markdown', 'html']),
+
         parent: z
             .string({
                 invalid_type_error: "Parent comment ID must be a valid string.",

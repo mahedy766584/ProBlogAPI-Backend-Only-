@@ -37,10 +37,13 @@ export const verifyAccessToken = async (token: string): Promise<JwtPayload> => {
 };
 
 export const verifyRefreshToken = async (token: string): Promise<JwtPayload> => {
+    //  console.log("Verifying Refresh Token:", token);
     const secret = config.jwt_refresh_secret as string;
     return new Promise((resolve, reject) => {
         jwt.verify(token, secret, (err, decoded) => {
+            // console.log("Refresh Token Verify Error:", err);
             if (err) return reject(err);
+            // console.log("Refresh Token Verified:", decoded);
             resolve(decoded as JwtPayload);
         });
     });

@@ -127,7 +127,7 @@ const getAllBlogPostFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleBlogPostFromDB = async (id: string) => {
-    const result = await BlogPost.findById(id);
+    const result = await BlogPost.findById(id).populate('author category tags');
     return checkEmptyOrThrow(result, "Blog post not found!");
 };
 

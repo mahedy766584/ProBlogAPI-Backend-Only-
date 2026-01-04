@@ -24,6 +24,16 @@ const getAllUserFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const getUserRoleAuthor = catchAsync(async(req, res) =>{
+    const result = await UserServices.getUserRoleAuthor();
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'All author is retrieved successfully',
+        data: result,
+    });
+});
+
 const getSingleUserFromDB = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await UserServices.getSingleUserFromDB(id);
@@ -125,4 +135,5 @@ export const UserController = {
     updateUserProfileImage,
     deactivateUserAccount,
     activateUserAccount,
+    getUserRoleAuthor,
 };

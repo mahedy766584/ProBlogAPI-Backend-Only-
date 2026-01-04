@@ -6,7 +6,7 @@ import { User } from "./user.model";
 import AppError from "../../error/appError";
 import { sendImageToCloudinary } from "../../utils/file/sendImageToCloudinary";
 import QueryBuilder from "../../builder/QueryBuilder";
-import { adminAllowedFields, isPrivilegedValue, userAllowedFields, userSearchableFields } from "./user.constant";
+import { adminAllowedFields, isPrivilegedValue, USER_ROLE, userAllowedFields, userSearchableFields } from "./user.constant";
 import { checkEmptyOrThrow } from "../../helpers/dbCheck";
 import { customJwtPayload } from "../../interface";
 import { verifyUserAccess } from "../../utils/guards/verifyUserAccess";
@@ -55,6 +55,14 @@ const getAllUserFromDB = async (query: Record<string, unknown>) => {
 const getSingleUserFromDB = async (id: string) => {
     const result = await User.findById(id);
     return checkEmptyOrThrow(result, ErrorMessages.COMMON.NOT_FOUND);
+};
+
+const getUserRoleAuthor = async() =>{
+
+    const result = await User.find({role: USER_ROLE.author});
+
+    return checkEmptyOrThrow(result, ErrorMessages.COMMON.NOT_FOUND);
+
 };
 
 const updateSingleUserIntoDB = async (id: string, payload: Partial<TUser>, tokePayload: customJwtPayload) => {
@@ -192,4 +200,5 @@ export const UserServices = {
     updateUserProfileImage,
     deactivateUserAccount,
     activateUserAccount,
+    getUserRoleAuthor,
 };

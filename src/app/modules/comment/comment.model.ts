@@ -7,7 +7,7 @@ const commentSchema = new Schema<TComment>({
         ref: "BlogPost",
         required: true
     },
-    author: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
@@ -15,6 +15,18 @@ const commentSchema = new Schema<TComment>({
     content: {
         type: String,
         required: true
+    },
+    contentType: {
+        type: String,
+        enum: {
+            values: ["markdown", "html"],
+            message: "Content type must be either 'markdown' or 'html'.",
+        },
+        required: [true, "Content type is required."],
+    },
+    renderedHtml: {
+        type: String,
+        required: [true, "Rendered HTML content is required."]
     },
     parent: {
         type: Schema.Types.ObjectId,

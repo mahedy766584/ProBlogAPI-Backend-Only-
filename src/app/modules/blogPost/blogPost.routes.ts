@@ -43,6 +43,7 @@ router.get(
         USER_ROLE.admin,
         USER_ROLE.superAdmin,
         USER_ROLE.author,
+        USER_ROLE.user,
     ),
     BlogPostController.getSingleBlogPostFromDB,
 );

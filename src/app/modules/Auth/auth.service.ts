@@ -184,7 +184,7 @@ const resetPassword = async (
     };
 
     const decoded = await verifyAccessToken(token);
-    
+
     if (payload?.userName !== decoded.userName) {
         throw new AppError(
             status.FORBIDDEN,
