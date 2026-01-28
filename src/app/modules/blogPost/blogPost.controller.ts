@@ -45,6 +45,18 @@ const updateSingleBlogPostIntoDB = catchAsync(async (req, res) => {
     });
 });
 
+const toggleFeatured = catchAsync(async (req, res) => {
+    const { postId } = req.params;
+    const result = await BlogPostService.toggleFeatured(postId, req.user!);
+    const isPublished = result?.isFeatured;
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: `${isPublished ? "Featured successfully" : "Removed from featured"}`,
+        data: result,
+    });
+});
+
 const deleteSingleBlogPostFromDB = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await BlogPostService.deleteSingleBlogPostFromDB(id, req.user);
@@ -62,4 +74,5 @@ export const BlogPostController = {
     getSingleBlogPostFromDB,
     updateSingleBlogPostIntoDB,
     deleteSingleBlogPostFromDB,
+    toggleFeatured,
 };

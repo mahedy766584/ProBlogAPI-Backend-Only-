@@ -9,14 +9,21 @@ export type TBlogPost = {
     excerpt?: string;
     readTime?: string;
     coverImage: string;
+
     author: Types.ObjectId;
     category: Types.ObjectId;
     tags: Types.ObjectId[];
+
     status: 'draft' | 'published' | 'rejected';
     isApproved: boolean;
+
     viewCount: number;
-    readingTime: number;
+    readingTime?: number;
     likeCount: number;
+    
     publishedAt: Date;
+
+    isFeatured: boolean;
+    featuredAt?: Date;
 };
 

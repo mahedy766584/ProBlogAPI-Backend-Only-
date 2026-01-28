@@ -39,6 +39,19 @@ const getSingleAuthorRequestFromDB = catchAsync(async (req, res) => {
     });
 });
 
+const getSingleAuthorByUserId = catchAsync(async (req, res) => {
+    const { userId } = req.params;
+    const result = await AuthorRequestService.getSingleAuthorByUserId(
+        userId
+    );
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Single Author is retrieved successfully",
+        data: result,
+    });
+});
+
 const updateSingleAuthorRequestIntoDB = catchAsync(async (req, res) => {
     const { id } = req.params;
     const payload = req.body;
@@ -97,4 +110,5 @@ export const AuthorRequestController = {
     getSingleAuthorRequestFromDB,
     updateSingleAuthorRequestIntoDB,
     deletedAuthorRequestFromDB,
+    getSingleAuthorByUserId,
 };

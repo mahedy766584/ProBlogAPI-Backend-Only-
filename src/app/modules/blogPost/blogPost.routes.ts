@@ -58,6 +58,16 @@ router.patch(
     BlogPostController.updateSingleBlogPostIntoDB
 );
 
+router.patch(
+    '/:postId/featured',
+    auth(
+        USER_ROLE.admin,
+        USER_ROLE.superAdmin,
+        USER_ROLE.author,
+    ),
+    BlogPostController.toggleFeatured,
+);
+
 router.delete(
     '/:id',
     auth(

@@ -64,6 +64,12 @@ const getSingleAuthorRequestFromDB = async (id: string) => {
     return checkEmptyOrThrow(result, "Author request not found!");
 };
 
+const getSingleAuthorByUserId = async (userId: string) => {
+    const result = await AuthorRequest.findOne({ user: userId })
+        .populate('user');
+    return checkEmptyOrThrow(result, "Author request not found!");
+};
+
 const updateSingleAuthorRequestIntoDB = async (
     id: string,
     payload: Partial<TAuthorRequest>,
@@ -193,4 +199,5 @@ export const AuthorRequestService = {
     getSingleAuthorRequestFromDB,
     updateSingleAuthorRequestIntoDB,
     deletedAuthorRequestFromDB,
+    getSingleAuthorByUserId,
 };

@@ -15,6 +15,7 @@ import { TAuthorRequest } from "../AuthorRequest/authorRequest.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 import mongoose from "mongoose";
 import { sendImageToCloudinary } from "../../utils/file/sendImageToCloudinary";
+import { verifyUserAccess } from "../../utils/guards/verifyUserAccess";
 
 const createBlogPostIntoDB = async (file: any, payload: Omit<TBlogPost, "author">, tokenPayload: customJwtPayload) => {
 
@@ -217,7 +218,25 @@ const updateSingleBlogPostIntoDB = async (
     return updatedBlog;
 };
 
+const toggleFeatured = async (postId: string, tokenPayload: customJwtPayload) => {
+    const blogPost = await BlogPost.findById(postId);
 
+    if (!blogPost) {
+        throw new AppError(status.NOT_FOUND, "Blog not found");
+    };
+
+    verifyUserAccess(blogPost.author.toString(), tokenPayload);
+
+    const isFeaturedNow = blogPost.isFeatured;
+
+    const result = await BlogPost.findByIdAndUpdate(postId, {
+        isFeatured: !isFeaturedNow,
+        featuredAt: !isFeaturedNow ? new Date() : null,
+    },
+    );
+
+    return result;
+};
 
 const deleteSingleBlogPostFromDB = async (
     id: string,
@@ -244,5 +263,6 @@ export const BlogPostService = {
     getAllBlogPostFromDB,
     getSingleBlogPostFromDB,
     updateSingleBlogPostIntoDB,
-    deleteSingleBlogPostFromDB
+    deleteSingleBlogPostFromDB,
+    toggleFeatured,
 };

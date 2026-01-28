@@ -24,8 +24,14 @@ router.get(
 
 router.get(
     '/:id',
-    auth(USER_ROLE.admin, USER_ROLE.author),
+    auth(USER_ROLE.admin, USER_ROLE.author, USER_ROLE.user),
     AuthorRequestController.getSingleAuthorRequestFromDB,
+);
+
+router.get(
+    '/author/:userId',
+    auth(USER_ROLE.admin, USER_ROLE.author, USER_ROLE.user),
+    AuthorRequestController.getSingleAuthorByUserId,
 );
 
 router.patch(

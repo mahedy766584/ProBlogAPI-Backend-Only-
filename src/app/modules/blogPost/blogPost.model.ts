@@ -84,6 +84,10 @@ const blogPostSchema = new Schema<TBlogPost>({
     publishedAt: {
         type: Date,
     },
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     timestamps: true,
 });
